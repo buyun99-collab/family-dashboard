@@ -1406,7 +1406,9 @@ body.is-locked{overflow:hidden}
           sync.ready = true;
           lsSet(PATH_KEY, hash);
           attachRoot();
-          return oldRoot.remove();      /* 옛 자리의 기록은 지웁니다 */
+          /* 옛 자리의 기록은 지웁니다. 지우지 못해도 새 자리로는 계속 씁니다. */
+          oldRoot.remove().catch(function () {});
+          return null;
         });
       }).then(function () {
         sync.swapping = false;
@@ -1417,6 +1419,7 @@ body.is-locked{overflow:hidden}
       sync.swapping = false;
       detachRoot();
       sync.hash = oldHash;
+      lsSet(PATH_KEY, oldHash);   /* 옛 자리로 되돌립니다 */
       sync.root = oldRoot;
       sync.ready = true;
       attachRoot();
