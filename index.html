@@ -1200,7 +1200,7 @@ body.is-locked{overflow:hidden}
   })();
 
   var sync = { ready: false, root: null, hash: null, timer: null, lastAppliedAt: 0, dirtyAt: 0, conn: 'off',
-               verified: false, sawBoard: false, connBound: false, swapping: false, nullSeq: 0 };
+               verified: false, sawBoard: false, loaded: false, connBound: false, swapping: false, nullSeq: 0 };
   var appStarted = false;
   var mySends = {};          /* 방금 내가 보낸 채팅 — 다른 기기 소식과 합질 때 살려 둡니다 */
   var bootAt = Date.now();
@@ -1233,6 +1233,8 @@ body.is-locked{overflow:hidden}
     if (!sync.ready) { return; }
     /* 이 경로가 우리 가족 자리(initialized)인지 확인되기 전에는 아무것도 쓰지 않습니다. */
     if (!sync.verified) { return; }
+    /* 가족 기록을 한 번 받아 보기 전에는 올리지 않습니다(새 기기의 기본값이 덮어쓰지 않도록). */
+    if (!sync.loaded) { return; }
     clearTimeout(sync.timer);
     sync.root.child('board').set(cloudPayload()).catch(function () {
       setConn('off');
@@ -1270,12 +1272,16 @@ body.is-locked{overflow:hidden}
       setTimeout(function () {
         if (token !== sync.nullSeq || !sync.ready || !sync.verified || !sync.root) { return; }
         sync.root.child('initialized').once('value').then(function (snap2) {
-          if (snap2.val() === true && token === sync.nullSeq && sync.ready && sync.verified) { pushCloud(); }
+          if (snap2.val() === true && token === sync.nullSeq && sync.ready && sync.verified) {
+            sync.loaded = true;   /* 자리는 맞는데 기록이 비어 있음 — 이 기기 기록으로 시작합니다 */
+            pushCloud();
+          }
         }, function () {});
       }, 900);
       return;
     }
     sync.sawBoard = true;
+    sync.loaded = true;   /* 가족 기록을 받았습니다 */
     if (raw.by === DEVICE_ID) { return; }   /* 내가 올린 내용은 이 기기에 이미 있습니다 */
     if (Date.now() - sync.dirtyAt < 1200) { return; }   /* 내가 고친 내용을 올리는 중이면 이 기기 기록이 더 새롭습니다 */
     var at = num(raw.at, 0);
@@ -1332,6 +1338,7 @@ body.is-locked{overflow:hidden}
     sync.ready = false;
     sync.verified = false;
     sync.sawBoard = false;
+    sync.loaded = false;
     sync.nullSeq++;
   }
 
