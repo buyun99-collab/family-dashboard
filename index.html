@@ -1717,7 +1717,8 @@ body.is-locked{overflow:hidden}
     renderAll();
     setTab(state.ui.tab || 'home', true);
     startCloud();
-    save();
+    /* 처음 열 때는 이 기기에만 저장합니다. 가족 기록은 잠시 뒤 데이터베이스에서 받아 맞춥니다. */
+    lsSet(KEY, JSON.stringify(state));
     setInterval(function () {
       if (dayKey() !== state.day) {
         ensureToday();
