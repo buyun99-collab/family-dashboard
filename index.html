@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFDF4">
+<meta name="description" content="우리 가족 기록장 — 공부·용돈·할일·채팅을 한 곳에서, 가족끼리 실시간으로 함께">
+<title>우리 가족 기록장</title>
+<style>
+/* ============================================================
+   우리 가족 기록장 — 파스텔 크림 테마
+   ============================================================ */
+:root{
+  --cream:#FFFDF4;
+  --ink:#4A4038;
+  --ink-2:#6E6359;
+  --ink-3:#9A8F84;
+  --mint:#EAF8EF;
+  --mint-2:#D8F0E1;
+  --mint-line:#CFEBD8;
+  --mint-deep:#4E9C77;
+  --sky:#EDF6FF;
+  --sky-2:#DCEBFA;
+  --sky-line:#D5E7F8;
+  --sky-deep:#4B7FB5;
+  --pink:#FDEEF2;
+  --pink-2:#FBDDE5;
+  --pink-line:#F8D8E2;
+  --pink-deep:#D9789A;
+  --lilac:#F5F0FD;
+  --lilac-line:#EADFF8;
+  --peach:#FFF5E8;
+  --peach-line:#FBE7CE;
+  --gold:#E9B865;
+  --shadow-s:0 4px 12px rgba(176,156,132,.10);
+  --shadow:0 10px 26px rgba(176,156,132,.13);
+  --shadow-l:0 18px 40px rgba(176,156,132,.16);
+  --r-lg:28px;
+  --r-md:22px;
+  --r-sm:16px;
+}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Pretendard","NanumSquareRound","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","NanumGothic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  letter-spacing:-0.01em;
+  background:
+    radial-gradient(120% 55% at 8% -8%, #FFF6D8 0%, rgba(255,246,216,0) 62%),
+    radial-gradient(95% 45% at 100% 2%, #E7F6FF 0%, rgba(231,246,255,0) 58%),
+    radial-gradient(90% 45% at 50% 104%, #FCEBF2 0%, rgba(252,235,242,0) 62%),
+    var(--cream);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p{margin:0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+ul{list-style:none;margin:0;padding:0}
+svg{display:block}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.av{width:100%;height:100%;display:block;aspect-ratio:1/1}
+
+/* ---------- layout ---------- */
+.app{max-width:520px;margin:0 auto;padding:16px 16px 122px;position:relative}
+.panel{animation:panelIn .28s ease both}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:6px 2px 2px}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand-mark{width:38px;height:38px;border-radius:13px;overflow:hidden;flex:none;box-shadow:var(--shadow-s);background:#fff}
+.brand h1{font-size:25px;font-weight:800;letter-spacing:-0.035em;line-height:1.15}
+.brand h1 em{font-style:normal;color:#EE9DB7}
+.hero-sub{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap}
+.today{font-size:19px;font-weight:700;letter-spacing:-0.02em}
+.muted{color:var(--ink-3);font-size:13.5px;margin-top:2px}
+.round-btn{
+  width:44px;height:44px;border-radius:16px;background:#fff;box-shadow:var(--shadow-s);
+  display:grid;place-items:center;color:#A79B8E;border:1.5px solid #F3ECDF;flex:none;
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.round-btn:active{transform:scale(.94)}
+.round-btn svg{width:22px;height:22px}
+
+/* ---------- weather ---------- */
+.weather{
+  margin-top:12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:12px 14px;border-radius:var(--r-md);
+  background:linear-gradient(135deg,#F4FBFF 0%,#FFFDF2 55%,#FFF9F0 100%);
+  border:1.5px solid #E6F3FB;box-shadow:var(--shadow-s);
+}
+.weather-ic{font-size:21px;line-height:1}
+.weather-main{font-size:15px;font-weight:700;color:#3E4A55}
+.weather-main span{font-weight:600;color:#71808D;font-size:14px;margin-left:3px}
+.weather-spacer{flex:1}
+.weather-tip{width:100%;font-size:12.5px;font-weight:700;color:#6C8C7A;margin-top:2px;display:flex;align-items:center;gap:5px}
+
+/* ---------- cards ---------- */
+.card{
+  border-radius:var(--r-lg);padding:17px;margin-top:14px;position:relative;overflow:hidden;
+  border:1.5px solid rgba(180,160,135,.12);box-shadow:var(--shadow);
+}
+.card--mint{background:linear-gradient(158deg,#F0FAF3 0%,#E8F7EE 55%,#E3F4EA 100%);border-color:#D8EFE0}
+.card--pink{background:linear-gradient(158deg,#FFF6F8 0%,#FDECF1 60%,#FBE6EC 100%);border-color:#F9DAE3}
+.card--lilac{background:linear-gradient(158deg,#FAF6FF 0%,#F4EEFC 60%,#F0E9FB 100%);border-color:#EADEF8}
+.card--sky{background:linear-gradient(158deg,#F4FAFF 0%,#EBF5FE 60%,#E6F1FC 100%);border-color:#DBEAF9}
+.card--peach{background:linear-gradient(158deg,#FFFBF1 0%,#FFF4E3 60%,#FFEFDA 100%);border-color:#FBE6CC}
+.card--cream{background:linear-gradient(158deg,#FFFDF7 0%,#FFF9EA 60%,#FFF6E0 100%);border-color:#F5EBD5}
+.card--white{background:#fff;border-color:#F2EADD}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.card-title{font-size:19px;font-weight:800;letter-spacing:-0.025em;display:flex;align-items:center;gap:7px}
+.card-title .tw{font-size:18px}
+.card-note{color:var(--ink-2);font-size:13px;line-height:1.55;margin-top:6px}
+.hint{color:var(--ink-3);font-size:12.5px;line-height:1.5;margin-top:8px}
+.divider{border:0;border-top:1.5px dashed rgba(196,176,152,.32);margin:14px 0}
+
+/* ---------- pills / chips ---------- */
+.pill{
+  display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:999px;
+  background:#fff;border:1.5px solid #F2E8D6;font-size:12.5px;font-weight:700;color:#7C7062;
+  white-space:nowrap;box-shadow:0 3px 8px rgba(180,160,140,.07);
+}
+.pill--warm{background:#FFF7EC;border-color:#F8DFB8;color:#C58A45}
+.pill--mint{background:#F0FBF4;border-color:#D3EFDF;color:#4E9C77}
+.pill--pink{background:#FFF5F8;border-color:#F8D9E4;color:#D1799A}
+.pill--sun{background:#FFF8E4;border-color:#F8E4B4;color:#C0904A}
+.pill--soft{background:#F4FBF7;border-color:#DCF1E6;color:#699B82}
+.pill--sky{background:#F2F9FF;border-color:#D8EAF8;color:#5C86AE}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 14px;border-radius:16px;font-size:14px;font-weight:700;border:1.5px solid transparent;
+  background:#fff;color:#6B5F53;box-shadow:var(--shadow-s);transition:transform .14s ease,filter .14s ease;
+  line-height:1.3;text-align:center;
+}
+.btn:active{transform:scale(.97)}
+.btn--big{padding:14px 12px;font-size:15px;border-radius:18px;flex:1;min-width:0}
+.btn--mint{background:linear-gradient(160deg,#E3F6EA,#D2EFE0);border-color:#C5E9D6;color:#3F8A67}
+.btn--pink{background:linear-gradient(160deg,#FFEFF4,#FDE3EB);border-color:#F8D3DF;color:#C2708F}
+.btn--sky{background:linear-gradient(160deg,#EDF7FF,#DDEEFD);border-color:#CFE4F8;color:#4C7CA8}
+.btn--peach{background:linear-gradient(160deg,#FFF6E8,#FFEBD2);border-color:#F9DFC0;color:#B4813F}
+.btn--soft{background:#FBF7EF;border-color:#F0E7D7;color:#877A6B}
+.btn--block{width:100%}
+.btn--sm{padding:8px 11px;font-size:12.5px;border-radius:13px}
+.btn-row{display:flex;gap:9px;margin-top:12px}
+.btn-row .btn{flex:1;min-width:0}
+
+/* ---------- segmented ---------- */
+.seg{
+  display:flex;gap:6px;padding:5px;border-radius:18px;background:rgba(255,255,255,.72);
+  border:1.5px solid rgba(220,205,182,.5);margin-top:11px;
+}
+.seg-btn{
+  flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 6px;border-radius:13px;font-size:13.5px;font-weight:700;color:#8B7F72;
+  transition:background .18s ease,color .18s ease,box-shadow .18s ease;white-space:nowrap;
+}
+.seg-btn .seg-av{width:24px;height:24px;border-radius:8px;overflow:hidden;flex:none;background:#fff}
+.seg-btn.is-on{background:#fff;color:#5A4D41;box-shadow:0 4px 12px rgba(180,160,140,.16);border:1.5px solid rgba(235,222,201,.9)}
+.seg--sky .seg-btn.is-on{background:linear-gradient(160deg,#E8F4FF,#D9EAFC);color:#3E6E9C;border-color:#CFE3F8}
+.seg--pink .seg-btn.is-on{background:linear-gradient(160deg,#FFF1F5,#FDE4EC);color:#B46783;border-color:#F8D6E1}
+.seg--mint .seg-btn.is-on{background:linear-gradient(160deg,#EFFBF3,#DDF3E5);color:#478C69;border-color:#D2EDDD}
+.seg--lilac .seg-btn.is-on{background:linear-gradient(160deg,#F7F2FE,#EFE7FB);color:#7B65A8;border-color:#E6DAF7}
+.seg--cream .seg-btn.is-on{background:linear-gradient(160deg,#FFFBF0,#FDF3DE);color:#9A7C48;border-color:#F2E4C8}
+
+/* ---------- family list ---------- */
+.person-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.person{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:22px;background:#fff;
+  border:1.5px solid rgba(226,213,192,.55);box-shadow:0 5px 14px rgba(180,160,140,.08);
+  width:100%;text-align:left;transition:transform .14s ease;
+}
+.person:active{transform:scale(.985)}
+.av-wrap{width:52px;height:52px;border-radius:18px;overflow:hidden;flex:none;background:#FBF8F1;border:1.5px solid rgba(226,213,192,.6)}
+.person-main{flex:1;min-width:0}
+.person-name{font-size:19px;font-weight:800;letter-spacing:-0.03em;line-height:1.2}
+.person-sub{font-size:12px;color:var(--ink-3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.person-stats{text-align:right;flex:none;display:flex;flex-direction:column;gap:3px;align-items:flex-end}
+.stat{display:flex;align-items:center;gap:4px;font-size:13.5px;font-weight:800;color:#7A6A58}
+.stat-ic{width:15px;height:15px;flex:none;display:block}
+.stat small{font-size:11px;font-weight:700;color:var(--ink-3)}
+.stat--star{color:#B98A3E}
+.stat--money{color:#B4778A;font-size:14.5px}
+
+/* ---------- mission ---------- */
+.mission-wrap{margin-top:10px;display:flex;align-items:center;gap:12px}
+.mission-emoji{
+  font-size:32px;width:60px;height:60px;border-radius:20px;display:grid;place-items:center;
+  background:rgba(255,255,255,.8);border:1.5px solid #F8E2D2;flex:none;box-shadow:var(--shadow-s);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.mission-emoji.pop{transform:scale(1.16) rotate(-6deg)}
+.mission-text{font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.35}
+.mission-count{font-variant-numeric:tabular-nums}
+
+/* ---------- stamp board ---------- */
+.stamp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:12px}
+.stamp-day{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stamp-dow{font-size:11.5px;color:var(--ink-3);font-weight:700}
+.stamp-slot{
+  width:100%;aspect-ratio:1/1;border-radius:50%;display:grid;place-items:center;
+  border:2.5px dashed #E7DCC8;background:rgba(255,255,255,.55);position:relative;
+  transition:transform .2s ease;
+}
+.stamp-slot .stamp-av{width:74%;height:74%;border-radius:50%;overflow:hidden;opacity:0;transform:scale(.6);transition:opacity .25s ease,transform .25s ease}
+.stamp-day.is-today .stamp-slot{border-color:#F4C978;background:#FFFBF0;box-shadow:0 0 0 3px rgba(244,201,122,.18)}
+.stamp-day.is-done .stamp-slot{border:0;background:linear-gradient(160deg,#FFFDF5,#FFF6E2);box-shadow:0 0 0 3px #F6D79B inset,0 5px 12px rgba(200,170,120,.18)}
+.stamp-day.is-done .stamp-slot .stamp-av{opacity:1;transform:scale(1)}
+.stamp-day.is-future .stamp-slot{opacity:.5}
+.stamp-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;flex-wrap:wrap}
+.stamp-foot .pill{font-size:12px}
+
+/* ---------- progress ---------- */
+.progress-line{display:flex;align-items:center;gap:10px;margin-top:13px}
+.progress{flex:1;height:11px;border-radius:999px;background:rgba(255,255,255,.85);box-shadow:inset 0 1px 3px rgba(170,150,125,.14);overflow:hidden}
+.progress > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#8FC7EC,#6DAEE0);transition:width .35s cubic-bezier(.22,1,.36,1)}
+.progress-line b{font-size:13.5px;font-weight:800;color:#4A78A6;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---------- checklist ---------- */
+.check-list{margin-top:6px}
+.check-row{
+  display:flex;align-items:center;gap:9px;padding:10px 2px;border-bottom:1.5px dashed rgba(196,176,152,.28);
+  animation:rowIn .22s ease both;
+}
+.check-row:last-child{border-bottom:0}
+@keyframes rowIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.checkbox{
+  width:27px;height:27px;border-radius:9px;border:2px solid #D9CDBC;background:#fff;flex:none;
+  display:grid;place-items:center;color:#fff;transition:background .18s ease,border-color .18s ease,transform .12s ease;
+}
+.checkbox svg{width:15px;height:15px;opacity:0;transition:opacity .16s ease}
+.checkbox.on{background:linear-gradient(160deg,#7FC3A3,#5FAE8B);border-color:#5FAE8B}
+.checkbox.on svg{opacity:1}
+.checkbox:active{transform:scale(.9)}
+.check-body{flex:1;min-width:0;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.check-text{font-size:15px;font-weight:600;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+.check-row.is-done .check-text{color:#B3A79A;text-decoration:line-through;text-decoration-color:#D9CEC0;text-decoration-thickness:1.5px}
+.check-tags{display:flex;gap:5px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:#FFF6E4;border:1px solid #F6E5C4;color:#B08A4A;display:inline-flex;align-items:center;gap:3px}
+.tag--qty{background:#FFFDF2;border-color:#F1E7CF;color:#A0917A}
+.tag--fixed{background:#FFF3D9;border-color:#F0DCAE;color:#B78A3C}
+.icon-actions{display:flex;gap:5px;flex:none}
+.ibtn{
+  width:32px;height:32px;border-radius:11px;display:grid;place-items:center;font-size:14px;
+  background:#FFFCF5;border:1.5px solid #F0E6D4;color:#9C8F7E;transition:transform .12s ease,background .16s ease;
+}
+.ibtn:active{transform:scale(.9)}
+.ibtn.is-on{background:#FFF3D6;border-color:#F0D8A6;color:#B98A3A}
+.ibtn--del{color:#D4899A}
+.ibtn--edit{color:#B79B62}
+.empty{
+  text-align:center;color:var(--ink-3);font-size:13px;padding:20px 10px;line-height:1.6;
+  border:1.5px dashed rgba(196,176,152,.4);border-radius:var(--r-sm);margin-top:8px;background:rgba(255,255,255,.5);
+}
+.add-inline{display:flex;gap:7px;margin-top:10px}
+.add-inline input{
+  flex:1;min-width:0;padding:11px 13px;border-radius:14px;border:1.5px solid #EDE3D2;background:#fff;
+  font-size:14px;outline:none;transition:border-color .16s ease,box-shadow .16s ease;
+}
+.add-inline input:focus{border-color:#CFE3F8;box-shadow:0 0 0 3px rgba(160,200,235,.18)}
+.add-inline input::placeholder{color:#BCB2A6}
+
+/* ---------- timer ---------- */
+.timer-box{
+  margin-top:12px;border-radius:24px;border:2px dashed #F0DCBE;background:rgba(255,255,255,.7);padding:14px;
+}
+.timer-card .seg{border-color:rgba(240,220,190,.7)}
+.timer-clock{
+  font-size:48px;font-weight:800;letter-spacing:-0.03em;text-align:center;color:#A6772F;
+  font-variant-numeric:tabular-nums;line-height:1.1;margin-top:10px;font-family:inherit;
+  transition:color .2s ease;
+}
+.timer-clock.is-running{color:#C98C2B}
+.timer-clock.is-done{color:#D98A9C;animation:pulseDone 1s ease infinite}
+@keyframes pulseDone{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.timer-hint{text-align:center;font-size:12.5px;color:var(--ink-3);font-weight:700;margin-top:6px;min-height:18px}
+.timer-track{height:6px;border-radius:999px;background:rgba(244,225,196,.75);margin-top:10px;overflow:hidden}
+.timer-track > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#F6D08A,#EFB965);transition:width .25s linear}
+.chip-row{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+.chip{
+  padding:9px 14px;border-radius:999px;font-size:13px;font-weight:800;background:#fff;
+  border:1.5px solid #E7EDE9;color:#7E8C86;transition:all .16s ease;
+}
+.chip.is-on{background:linear-gradient(160deg,#E8F4FF,#D8EAFB);border-color:#C6DDF5;color:#3F6F9E;box-shadow:0 4px 10px rgba(150,185,220,.18)}
+.timer-card .chip.is-on{background:linear-gradient(160deg,#FFF6E4,#FDEBCF);border-color:#F2D9B0;color:#A8772F;box-shadow:0 4px 10px rgba(220,185,130,.2)}
+.chip:active{transform:scale(.95)}
+.timer-custom{display:flex;gap:7px;margin-top:9px}
+.timer-custom input{
+  flex:1;min-width:0;padding:11px 13px;border-radius:14px;border:1.5px solid #E7EDE9;background:#fff;font-size:14px;outline:none;
+}
+.timer-custom input:focus{border-color:#CFE3F8;box-shadow:0 0 0 3px rgba(160,200,235,.18)}
+.timer-custom .btn{flex:none;padding:11px 16px}
+
+/* ---------- money ---------- */
+.money-total{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:12px;
+  padding:14px 16px;border-radius:22px;background:rgba(255,255,255,.78);border:1.5px solid #F6E4C6;
+}
+.money-total span{font-size:14px;font-weight:700;color:#8B7B62}
+.money-total b{font-size:30px;font-weight:800;letter-spacing:-0.04em;color:#A97B2E;font-variant-numeric:tabular-nums}
+.money-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.money-chips .pill{font-size:12px;padding:6px 10px}
+.field-label{display:block;font-size:13px;font-weight:800;color:#8B7B62;margin-top:14px}
+.inline-field{display:flex;gap:7px;margin-top:7px}
+.inline-field input{
+  flex:1;min-width:0;padding:12px 14px;border-radius:15px;border:1.5px solid #F0E2C9;background:#fff;
+  font-size:16px;font-weight:700;outline:none;font-variant-numeric:tabular-nums;
+}
+.inline-field input:focus{border-color:#EFCF96;box-shadow:0 0 0 3px rgba(240,205,150,.2)}
+.history-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1.5px dashed rgba(196,176,152,.26)}
+.history-row:last-child{border-bottom:0}
+.history-ic{
+  width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:15px;flex:none;
+  background:#F5FBF7;border:1.5px solid #E2F0E8;
+  cursor:default;
+}
+.history-ic.spend{background:#FFF7F9;border-color:#F8E1E9}
+.history-main{flex:1;min-width:0}
+.history-title{font-size:14px;font-weight:700}
+.history-date{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.history-amount{font-size:15px;font-weight:800;color:#3F8A67;font-variant-numeric:tabular-nums;white-space:nowrap}
+.history-amount.spend{color:#CD7E93}
+
+/* ---------- todo ---------- */
+.todo-person{
+  border-radius:var(--r-md);padding:13px;margin-top:11px;border:1.5px solid rgba(226,213,192,.5);
+  background:rgba(255,255,255,.62);box-shadow:0 5px 14px rgba(180,160,140,.07);
+}
+.todo-person.tint-hajin{background:linear-gradient(160deg,#F7FDFA,#EEFAF6);border-color:#DCF1EA}
+.todo-person.tint-woojae{background:linear-gradient(160deg,#FFFCF3,#FFF7E7);border-color:#F8EACF}
+.todo-person.tint-mom{background:linear-gradient(160deg,#FFF8FA,#FDEEF3);border-color:#F8DEE7}
+.todo-person.tint-dad{background:linear-gradient(160deg,#F7FBFF,#EDF6FE);border-color:#DCEBF8}
+.todo-head{display:flex;align-items:center;gap:10px}
+.todo-head .av-wrap{width:44px;height:44px;border-radius:15px}
+.todo-name{font-size:17px;font-weight:800;letter-spacing:-0.03em}
+.todo-prog{font-size:11.5px;color:var(--ink-3);font-weight:700;margin-top:2px}
+.todo-add{
+  margin-top:9px;width:100%;padding:11px;border-radius:15px;border:1.8px dashed #E3D6C1;
+  background:rgba(255,255,255,.75);color:#9C8B72;font-size:13.5px;font-weight:800;transition:background .16s ease;
+}
+.todo-add:active{background:#fff}
+
+/* ---------- chat ---------- */
+.chat-card{background:linear-gradient(170deg,#FFFEF9 0%,#FFF9F0 100%)}
+.chat-stream{
+  margin-top:12px;display:flex;flex-direction:column;gap:12px;
+  height:clamp(200px, calc(100vh - 470px), 430px);overflow-y:auto;
+  padding:4px 2px 8px;scroll-behavior:smooth;
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.25) 0, #000 26px);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.25) 0, #000 26px);
+}
+.chat-stream::-webkit-scrollbar{width:5px}
+.chat-stream::-webkit-scrollbar-thumb{background:#EADFCC;border-radius:99px}
+.msg{display:flex;gap:8px;align-items:flex-end;animation:rowIn .2s ease both;max-width:100%}
+.msg.is-mine{flex-direction:row-reverse}
+.msg-av{width:34px;height:34px;border-radius:12px;overflow:hidden;flex:none;background:#fff;border:1.5px solid #F1E7D6;box-shadow:var(--shadow-s)}
+.msg-body{display:flex;flex-direction:column;gap:4px;min-width:0;max-width:78%}
+.msg.is-mine .msg-body{align-items:flex-end}
+.msg-meta{display:flex;gap:5px;align-items:center;font-size:11px;color:var(--ink-3);font-weight:700;padding:0 3px}
+.msg-who{color:#8A7B69}
+.bubble{
+  padding:10px 14px;border-radius:18px 18px 18px 6px;background:#fff;border:1.5px solid #F1E7D6;
+  font-size:14.5px;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere;box-shadow:var(--shadow-s);
+}
+.msg.is-mine .bubble{
+  border-radius:18px 18px 6px 18px;background:linear-gradient(160deg,#EAF6FF,#DDEEFC);border-color:#D2E6F8;
+}
+.sticker-bubble{
+  padding:8px;border-radius:20px;background:#fff;border:1.5px solid #F1E7D6;box-shadow:var(--shadow-s);
+}
+.sticker-bubble .sticker-face{width:104px;height:104px;border-radius:16px;overflow:hidden}
+.sticker-bubble .sticker-emoji{font-size:58px;line-height:1;width:104px;height:104px;display:grid;place-items:center}
+.msg-foot{display:flex;align-items:center;gap:6px;padding:0 3px}
+.heart{
+  display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:999px;background:#fff;
+  border:1.5px solid #F3E7DA;font-size:12px;font-weight:800;color:#B49A92;transition:all .16s ease;
+}
+.heart.is-on{background:#FFF0F3;border-color:#F8CFDA;color:#E0648A}
+.heart:active{transform:scale(.92)}
+.heart-big{font-size:14px}
+.chat-card.is-stickers .chat-stream{height:clamp(140px, calc(100vh - 690px), 300px)}
+.chat-input{
+  display:flex;gap:7px;align-items:center;margin-top:10px;padding-top:10px;border-top:1.5px dashed rgba(196,176,152,.32);
+}
+.chat-input input{
+  flex:1;min-width:0;padding:12px 14px;border-radius:16px;border:1.5px solid #EFE5D4;background:#fff;font-size:14.5px;outline:none;
+}
+.chat-input input:focus{border-color:#E3D3BC;box-shadow:0 0 0 3px rgba(230,209,175,.18)}
+.chat-input .btn{padding:12px 15px;border-radius:16px;flex:none}
+.sticker-panel{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:9px;padding:10px;
+  border-radius:18px;background:rgba(255,255,255,.75);border:1.5px dashed #EBDDCA;
+}
+.sticker-btn{
+  aspect-ratio:1/1;border-radius:16px;background:#fff;border:1.5px solid #F3E9D8;display:grid;place-items:center;
+  font-size:26px;overflow:hidden;transition:transform .14s ease;
+}
+.sticker-btn:active{transform:scale(.92)}
+.sticker-btn .sticker-face{width:82%;height:82%;border-radius:12px;overflow:hidden}
+
+/* ---------- tab bar ---------- */
+.tabbar{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:100%;max-width:520px;z-index:40;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:rgba(255,253,246,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1.5px solid rgba(226,213,192,.6);
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px 6px;border-radius:16px;
+  color:#A69A8C;font-size:11.5px;font-weight:800;transition:color .18s ease,background .18s ease,transform .12s ease;
+}
+.tab svg{width:23px;height:23px}
+.tab.is-active{color:#8A6B45;background:linear-gradient(160deg,#FFF8E6,#FDEFD3);box-shadow:0 4px 12px rgba(215,190,150,.24)}
+.tab.is-active svg{color:#B98A3E}
+.tab:active{transform:scale(.95)}
+
+/* ---------- modal ---------- */
+.modal-root{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center}
+.modal-blind{position:absolute;inset:0;background:rgba(74,64,56,.32);backdrop-filter:blur(2px);animation:fadeIn .2s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.sheet{
+  position:relative;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;
+  background:linear-gradient(170deg,#FFFEF8,#FFFBF0);border-radius:26px 26px 0 0;
+  border-top:1.5px solid #F3E9D6;box-shadow:0 -12px 40px rgba(120,100,80,.18);
+  padding:18px 18px calc(22px + env(safe-area-inset-bottom));animation:sheetUp .28s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes sheetUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet-grip{width:44px;height:5px;border-radius:99px;background:#EADFCB;margin:0 auto 12px}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sheet-title{font-size:19px;font-weight:800;letter-spacing:-0.025em;display:flex;align-items:center;gap:7px}
+.sheet-close{width:34px;height:34px;border-radius:12px;background:#FBF5E9;border:1.5px solid #F0E7D5;display:grid;place-items:center;color:#A3937F;font-size:16px;font-weight:800}
+.sheet-note{font-size:13px;color:var(--ink-2);margin-top:7px;line-height:1.55}
+.sheet-section{margin-top:14px}
+.field{margin-top:10px}
+.field > label{display:block;font-size:12.5px;font-weight:800;color:#8B7B62;margin-bottom:6px}
+.field input,.field select{
+  width:100%;padding:12px 14px;border-radius:15px;border:1.5px solid #EEE2CE;background:#fff;font-size:15px;outline:none;
+}
+.field input:focus,.field select:focus{border-color:#E0CDAC;box-shadow:0 0 0 3px rgba(230,209,175,.18)}
+.choice-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.choice{
+  padding:8px 13px;border-radius:12px;background:#fff;border:1.5px solid #EEE4D3;font-size:13px;font-weight:800;color:#8B7B62;
+}
+.choice.is-on{background:#FFF3D9;border-color:#EFD8A9;color:#B0803A}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.cal-month{font-size:16px;font-weight:800}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+.cal-dow{text-align:center;font-size:11px;font-weight:800;color:var(--ink-3);padding-bottom:2px}
+.cal-cell{
+  aspect-ratio:1/1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-size:12px;font-weight:700;color:#8B7F72;background:rgba(255,255,255,.6);border:1.5px solid #F2E8D7;position:relative;
+}
+.cal-cell.is-empty{background:transparent;border-color:transparent}
+.cal-cell.is-done{background:linear-gradient(160deg,#FFFCF0,#FFF3DA);border-color:#F2DDB2;color:#A87F38}
+.cal-cell.is-today{box-shadow:0 0 0 2.5px #F3CD8B inset}
+.cal-cell .cal-face{width:54%;height:54%;border-radius:50%;overflow:hidden;margin-top:1px}
+.cal-cell .cal-dot{width:6px;height:6px;border-radius:50%;background:#E9C079}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1.5px dashed rgba(196,176,152,.28)}
+.setting-row:last-child{border-bottom:0}
+.setting-title{font-size:14px;font-weight:800}
+.setting-desc{font-size:12px;color:var(--ink-3);margin-top:3px;line-height:1.5}
+.danger{color:#CE6E86}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:92px;transform:translate(-50%,14px);z-index:90;
+  padding:11px 18px;border-radius:16px;background:rgba(74,64,56,.92);color:#FFF9EE;font-size:13.5px;font-weight:700;
+  box-shadow:0 10px 26px rgba(60,50,40,.24);opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;
+  max-width:88%;text-align:center;line-height:1.4;
+}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 주간 적립 그래프 ---------- */
+.week-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px;align-items:end}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+.bar-val{font-size:10.5px;font-weight:800;color:#9A8A72;font-variant-numeric:tabular-nums}
+.bar-rail{width:100%;height:58px;display:flex;align-items:flex-end;justify-content:center}
+.bar{width:74%;max-width:22px;border-radius:9px;background:linear-gradient(180deg,#C6ECDA,#9FD9B6);min-height:5px;transition:height .3s ease}
+.bar-col.is-zero .bar{background:#EDE5D6}
+.bar-col.is-today .bar{background:linear-gradient(180deg,#F8CF8E,#EBAA55)}
+.bar-col.is-today .bar-val{color:#B4813F}
+.bar-dow{font-size:10.5px;font-weight:700;color:#9A8F84}
+
+/* ---------- 보조 정리 ---------- */
+.person-main,.todo-who{display:flex;flex-direction:column;min-width:0;flex:1}
+.person-name,.person-sub,.todo-name,.todo-prog,.history-title,.history-date,.setting-title,.setting-desc{display:block}
+.av-wrap,.brand-mark,.seg-av,.stamp-av,.msg-av,.cal-face,.sticker-face{display:block}
+.todo-badge{margin-left:auto}
+.seg--chat .seg-btn{font-size:12.5px;gap:4px;padding:8px 3px}
+.seg--chat .seg-av{width:20px;height:20px;border-radius:7px}
+.todo-head .todo-who{line-height:1.2}
+.money-total b{display:block;text-align:right}
+
+/* ---------- desktop ---------- */
+@media (min-width:560px){
+  .app{padding-top:26px}
+  .tabbar{border-radius:22px 22px 0 0;box-shadow:0 -6px 24px rgba(176,156,132,.12)}
+}
+@media (min-width:820px){
+  body{padding-top:26px}
+  .app{
+    background:rgba(255,255,255,.46);border-radius:34px;border:1.5px solid rgba(230,218,198,.75);
+    box-shadow:0 26px 64px rgba(176,156,132,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    padding:22px 20px 132px;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s !important;transition-duration:.001s !important}
+}
+
+/* ---------- 가족 입장 잠금 (4자리 PIN) ---------- */
+.lock{
+  position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;
+  padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(120% 55% at 8% -8%, #FFF6D8 0%, rgba(255,246,216,0) 62%),
+    radial-gradient(95% 50% at 100% 4%, #E7F6FF 0%, rgba(231,246,255,0) 60%),
+    var(--cream);
+}
+.lock-card{
+  width:100%;max-width:352px;padding:26px 22px 20px;text-align:center;
+  background:#fff;border:1px solid var(--peach-line);border-radius:var(--r-lg);box-shadow:var(--shadow-l);
+}
+.lock-mark{width:62px;height:62px;margin:0 auto 12px;border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow-s)}
+.lock-card h2{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.lock-card p{margin-top:7px;font-size:13.5px;font-weight:600;color:var(--ink-3);line-height:1.5}
+.lock-dots{display:flex;justify-content:center;gap:12px;margin:20px 0 8px}
+.lock-dot{width:14px;height:14px;border-radius:50%;background:#fff;border:1.8px solid var(--mint-line);transition:transform .15s ease,background .15s ease,border-color .15s ease}
+.lock-dot.is-on{background:var(--mint-deep);border-color:var(--mint-deep);transform:scale(1.1)}
+.lock-msg{min-height:20px !important;margin-top:2px !important;font-size:12.5px !important;font-weight:700 !important;color:var(--pink-deep) !important}
+.lock-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.lock-key{height:52px;border-radius:16px;background:#fff;border:1px solid #EFE7DA;box-shadow:var(--shadow-s);font-size:20px;font-weight:800;color:var(--ink);transition:transform .12s ease}
+.lock-key:active{transform:scale(.96)}
+.lock-key--soft{font-size:14px;font-weight:700;color:var(--ink-2);background:#FFF9EC;border-color:var(--peach-line)}
+.lock-foot{margin-top:14px;font-size:11.5px;font-weight:600;color:var(--ink-3);line-height:1.55}
+.is-bad .lock-dots{animation:lockShake .38s ease}
+@keyframes lockShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+body.is-locked .app,body.is-locked .tabbar{visibility:hidden}
+body.is-locked{overflow:hidden}
+
+/* ---------- 동기화 상태 ---------- */
+.sync-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#C9C1B6;margin-right:6px;vertical-align:1px}
+.sync-dot.is-on{background:#54B07F}
+.sync-dot.is-off{background:#E1928F}
+.setting-row .btn--sm{white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- ===== 가족 입장 잠금 ===== -->
+<div class="lock" id="lockScreen" hidden>
+  <div class="lock-card" id="lockCard">
+    <div class="lock-mark"><svg class="av"><use href="#ic-mark"></use></svg></div>
+    <h2>우리 가족 기록장</h2>
+    <p>가족만 들어올 수 있어요.<br>4자리 PIN을 눌러 주세요.</p>
+    <div class="lock-dots" id="lockDots">
+      <span class="lock-dot"></span><span class="lock-dot"></span><span class="lock-dot"></span><span class="lock-dot"></span>
+    </div>
+    <p class="lock-msg" id="lockMsg"></p>
+    <div class="lock-pad" id="lockPad"></div>
+    <p class="lock-foot">이 기기에서는 한 번만 입력하면 기억해요.<br>PIN은 기록장 설정(⚙️)에서 바꿀 수 있어요.</p>
+  </div>
+</div>
+
+<!-- ===== 가족 캐릭터 · 아이콘 (자체 제작 SVG) ===== -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <!-- 아빠 · 듬직한 곰 -->
+  <symbol id="av-dad" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="#EDF4FD"/>
+    <circle cx="50" cy="96" r="34" fill="#E1EBF8"/>
+    <circle cx="26" cy="31" r="11.5" fill="#E2C6A6"/>
+    <circle cx="74" cy="31" r="11.5" fill="#E2C6A6"/>
+    <circle cx="26" cy="31" r="5.6" fill="#F4DFC9"/>
+    <circle cx="74" cy="31" r="5.6" fill="#F4DFC9"/>
+    <ellipse cx="50" cy="54" rx="29.5" ry="26.5" fill="#EDD3B7"/>
+    <ellipse cx="50" cy="63" rx="15" ry="11" fill="#FAF0E3"/>
+    <path d="M36.5 49.5q4-5.6 8 0" fill="none" stroke="#6C5341" stroke-width="3" stroke-linecap="round"/>
+    <path d="M55.5 49.5q4-5.6 8 0" fill="none" stroke="#6C5341" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="50" cy="58.5" rx="5.2" ry="3.9" fill="#8A6A54"/>
+    <path d="M50 62.4v2.6M50 65q-3.4 2.8-5.8 0M50 65q3.4 2.8 5.8 0" fill="none" stroke="#8A6A54" stroke-width="1.9" stroke-linecap="round"/>
+    <ellipse cx="30.5" cy="60.5" rx="6" ry="4" fill="#F6BFC8" opacity=".78"/>
+    <ellipse cx="69.5" cy="60.5" rx="6" ry="4" fill="#F6BFC8" opacity=".78"/>
+    <path d="M32 84q18-10 36 0v16H32z" fill="#C9DBF0" opacity=".9"/>
+    <path d="M44 82h12l-6 7z" fill="#B7CDE7"/>
+  </symbol>
+
+  <!-- 엄마 · 다정한 토끼 -->
+  <symbol id="av-mom" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="#FDEEF3"/>
+    <circle cx="50" cy="98" r="32" fill="#FBE3EA"/>
+    <ellipse cx="35" cy="25" rx="8.2" ry="19" fill="#FFFCF6" transform="rotate(-11 35 25)"/>
+    <ellipse cx="65" cy="25" rx="8.2" ry="19" fill="#FFFCF6" transform="rotate(11 65 25)"/>
+    <ellipse cx="35" cy="26" rx="4" ry="13" fill="#F8C9D6" transform="rotate(-11 35 26)"/>
+    <ellipse cx="65" cy="26" rx="4" ry="13" fill="#F8C9D6" transform="rotate(11 65 26)"/>
+    <ellipse cx="50" cy="60" rx="27" ry="24.5" fill="#FFFDF8"/>
+    <path d="M37 57.5q3.6-5 7.2 0" fill="none" stroke="#A9866E" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M55.8 57.5q3.6-5 7.2 0" fill="none" stroke="#A9866E" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M47.4 64.5h5.2L50 67.4z" fill="#EFA3B6"/>
+    <path d="M50 67.4v2.4M50 69.8q-3.4 2.6-5.6 0M50 69.8q3.4 2.6 5.6 0" fill="none" stroke="#C9A08E" stroke-width="1.7" stroke-linecap="round"/>
+    <ellipse cx="31.5" cy="64" rx="6" ry="4" fill="#F8B9C9" opacity=".85"/>
+    <ellipse cx="68.5" cy="64" rx="6" ry="4" fill="#F8B9C9" opacity=".85"/>
+    <path d="M50 34.6c1.8-3.6 7.4-3 7.4 1.2 0 2.8-4.4 5.6-7.4 8-3-2.4-7.4-5.2-7.4-8 0-4.2 5.6-4.8 7.4-1.2z" fill="#F7A9BE" opacity=".95"/>
+  </symbol>
+
+  <!-- 하진 · 씩씩한 고양이 -->
+  <symbol id="av-hajin" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="#EAF8F2"/>
+    <circle cx="50" cy="98" r="32" fill="#DCF2E9"/>
+    <path d="M24 42 29 17 46 32Z" fill="#BBDCD4"/>
+    <path d="M76 42 71 17 54 32Z" fill="#BBDCD4"/>
+    <path d="M30 36 33 24 42 32Z" fill="#F6C7D2"/>
+    <path d="M70 36 67 24 58 32Z" fill="#F6C7D2"/>
+    <ellipse cx="50" cy="57" rx="28.5" ry="26" fill="#CFE9E2"/>
+    <path d="M21 55h8M21 61h8" stroke="#AFCFC8" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M71 55h8M71 61h8" stroke="#AFCFC8" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="40.5" cy="54" r="3.4" fill="#3E5751"/>
+    <circle cx="59.5" cy="54" r="3.4" fill="#3E5751"/>
+    <circle cx="41.6" cy="52.8" r="1.15" fill="#fff"/>
+    <circle cx="60.6" cy="52.8" r="1.15" fill="#fff"/>
+    <path d="M47 61h6l-3 3.4z" fill="#EFA6B7"/>
+    <path d="M50 64.4v2.2M50 66.6q-3 2.4-5 0M50 66.6q3 2.4 5 0" fill="none" stroke="#93AFA8" stroke-width="1.7" stroke-linecap="round"/>
+    <ellipse cx="32.5" cy="63" rx="5.2" ry="3.5" fill="#F6BFC8" opacity=".82"/>
+    <ellipse cx="67.5" cy="63" rx="5.2" ry="3.5" fill="#F6BFC8" opacity=".82"/>
+    <path d="M79 22l1.9 4.4 4.4 1.9-4.4 1.9L79 34.6l-1.9-4.4-4.4-1.9 4.4-1.9z" fill="#F3CE84"/>
+  </symbol>
+
+  <!-- 우재 · 귀여운 병아리 -->
+  <symbol id="av-woojae" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="#FFF6E4"/>
+    <circle cx="50" cy="98" r="32" fill="#FCEBCB"/>
+    <path d="M52 22q-5-8 1.5-12 2.5 6 6.5 8" fill="none" stroke="#EFC063" stroke-width="3.6" stroke-linecap="round"/>
+    <ellipse cx="23" cy="66" rx="7" ry="10" fill="#F7D985" transform="rotate(-16 23 66)"/>
+    <ellipse cx="77" cy="66" rx="7" ry="10" fill="#F7D985" transform="rotate(16 77 66)"/>
+    <ellipse cx="50" cy="57" rx="27.5" ry="25.5" fill="#FBE18F"/>
+    <circle cx="41" cy="54.5" r="3.3" fill="#5B4A2F"/>
+    <circle cx="59" cy="54.5" r="3.3" fill="#5B4A2F"/>
+    <circle cx="42.1" cy="53.3" r="1.1" fill="#fff"/>
+    <circle cx="60.1" cy="53.3" r="1.1" fill="#fff"/>
+    <path d="M45.6 61.5h8.8L50 67.8z" fill="#F6A45B"/>
+    <ellipse cx="32" cy="62" rx="5.6" ry="3.7" fill="#F8BFCB" opacity=".9"/>
+    <ellipse cx="68" cy="62" rx="5.6" ry="3.7" fill="#F8BFCB" opacity=".9"/>
+  </symbol>
+
+  <!-- 집 · 하트 마크 -->
+  <symbol id="ic-mark" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="50" fill="#EAF8EF"/>
+    <path d="M50 26l24 19v25a5 5 0 0 1-5 5H31a5 5 0 0 1-5-5V45z" fill="#FFFDF6" stroke="#BFE0CC" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M50 62c1.6-3.2 6.6-2.7 6.6 1 0 2.5-3.9 5-6.6 7.1-2.7-2.1-6.6-4.6-6.6-7.1 0-3.7 5-4.2 6.6-1z" fill="#F2A2B9"/>
+  </symbol>
+
+  <symbol id="ic-home" viewBox="0 0 24 24"><path d="M4 11.3 12 4.5l8 6.8V19a1.7 1.7 0 0 1-1.7 1.7h-3.5v-5.3H9.2v5.3H5.7A1.7 1.7 0 0 1 4 19z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.9C10.1 5.3 7.5 4.7 4.4 5v12.3c3.1-.3 5.7.3 7.6 1.9 1.9-1.6 4.5-2.2 7.6-1.9V5c-3.1-.3-5.7.3-7.6 1.9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6.9v12.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="ic-wallet" viewBox="0 0 24 24"><rect x="3.2" y="5.6" width="17.6" height="13" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.2 10.2h17.6" stroke="currentColor" stroke-width="1.8"/><circle cx="16.8" cy="14.8" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><rect x="3.8" y="3.8" width="16.4" height="16.4" rx="5.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M8.3 12.2l2.7 2.7 4.8-5.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-chat" viewBox="0 0 24 24"><path d="M20 12.3c0 3.9-3.6 7-8 7-1 0-2-.2-2.9-.5L5 20.3l.9-3.3C4.7 15.6 4 14 4 12.3c0-3.9 3.6-7 8-7s8 3.1 8 7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="9" cy="12.3" r="1" fill="currentColor"/><circle cx="12" cy="12.3" r="1" fill="currentColor"/><circle cx="15" cy="12.3" r="1" fill="currentColor"/></symbol>
+  <symbol id="ic-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M19.5 13.6a7.6 7.6 0 0 0 0-3.2l1.8-1.4-1.9-3.3-2.2.9a7.6 7.6 0 0 0-2.7-1.5L13.9 2h-3.8l-.4 2.8a7.6 7.6 0 0 0-2.7 1.5l-2.2-.9-1.9 3.3 1.8 1.4a7.6 7.6 0 0 0 0 3.2L3 15.2l1.9 3.3 2.2-.9c.8.7 1.7 1.2 2.7 1.5l.4 2.8h3.8l.4-2.8c1-.3 1.9-.8 2.7-1.5l2.2.9 1.9-3.3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-tick" viewBox="0 0 24 24"><path d="M5 12.8l4.4 4.2L19 6.6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3.2l2.72 5.5 6.08.88-4.4 4.29 1.04 6.05L12 17.06l-5.44 2.86 1.04-6.05-4.4-4.29 6.08-.88z" fill="#F3C46B" stroke="#E1A94A" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+  <symbol id="ic-piggy" viewBox="0 0 24 24"><path d="M4.4 13.1c0-3.05 3.05-5.5 6.8-5.5 1.6 0 3.05.45 4.15 1.2l2.6-1.15.25 2.5c.95.95 1.5 2.15 1.5 3.35 0 1.55-.95 2.9-2.5 3.8H9.5c-2.9 0-5.1-1.9-5.1-4.2z" fill="#F7BDCB" stroke="#E39CB0" stroke-width="1.15" stroke-linejoin="round"/><path d="M15.85 9.55l2.35-1.05.2 2.35" fill="#F7BDCB" stroke="#E39CB0" stroke-width="1.15" stroke-linejoin="round"/><circle cx="9.3" cy="12.2" r="1" fill="#7E5E63"/><ellipse cx="17.35" cy="13.6" rx="1.55" ry="1.2" fill="#FDD8E1" stroke="#E39CB0" stroke-width="1"/><path d="M12.2 7.9v1.2" stroke="#E39CB0" stroke-width="1.15" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="app">
+  <!-- ================= 헤더 ================= -->
+  <header class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <span class="brand-mark"><svg class="av"><use href="#ic-mark"></use></svg></span>
+        <h1>우리 가족 <em>기록장</em></h1>
+      </div>
+      <button class="round-btn" data-act="settings:open" aria-label="기록장 설정">
+        <svg><use href="#ic-gear"></use></svg>
+      </button>
+    </div>
+    <div class="hero-sub">
+      <div>
+        <p class="today" id="todayLine">11월 15일 일요일</p>
+        <p class="muted">우리집의 포근한 하루</p>
+      </div>
+      <span class="pill pill--white">✨ 오늘도 함께 기록해요</span>
+    </div>
+    <!-- 날씨 배지: 오프라인에서도 보이는 예시 값입니다. -->
+    <div class="weather" id="weatherBadge">
+      <span class="weather-ic">☀️</span>
+      <span class="weather-main">통영 <b>13°</b> <span>맑음</span></span>
+      <span class="pill pill--sun">미세먼지 좋음</span>
+      <span class="weather-tip">🌿 나들이 하기 좋은 날이에요 · 초미세먼지 보통</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= 홈 ================= -->
+    <section class="panel" id="panel-home" role="tabpanel" aria-labelledby="tab-home">
+      <div class="card card--mint">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">🏠</span> 우리 가족</h2>
+          <span class="pill pill--mint" id="familySummary">오늘 도장 0개</span>
+        </div>
+        <div class="person-list" id="familyList"></div>
+      </div>
+
+      <div class="card card--pink" id="missionCard">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">🎲</span> 오늘의 가족 미션</h2>
+          <span class="pill pill--pink">함께 <b class="mission-count" id="missionCount">0</b>번</span>
+        </div>
+        <div class="mission-wrap">
+          <div class="mission-emoji" id="missionEmoji">🥕</div>
+          <p class="mission-text" id="missionText">저녁 준비 같이 돕기</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn--mint btn--big" data-act="mission:together">✅ 다 같이 했어요</button>
+          <button class="btn btn--white btn--big" data-act="mission:reroll">🔁 다른 미션 뽑기</button>
+        </div>
+        <p class="hint">가족이 다 함께 하는 미션이에요. 하루에 한 번 가볍게 해 봐요!</p>
+      </div>
+
+      <div class="card card--lilac">
+        <div class="card-head">
+          <h2 class="card-title" id="stampTitle"><span class="tw">🌸</span> 도장판</h2>
+          <span class="pill pill--warm" id="streakPill">🔥 0일 연속</span>
+        </div>
+        <div class="seg seg--lilac" id="stampSeg" role="tablist" aria-label="도장판 아이 선택"></div>
+        <p class="card-note">그날 공부나 루틴을 하나라도 마치면 도장이 찍혀요.</p>
+        <div class="stamp-days" id="stampDays"></div>
+        <div class="stamp-foot">
+          <span class="pill" id="stampMonthPill">이번 달 도장 0개</span>
+          <button class="btn btn--white btn--sm" data-act="stamp:view">🗓️ 도장판 달력 보기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 공부 ================= -->
+    <section class="panel" id="panel-study" role="tabpanel" aria-labelledby="tab-study" hidden>
+      <div class="card card--sky">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">📚</span> 오늘의 공부 플랜</h2>
+          <span class="pill pill--sky" id="studyTodayPill">오늘 적립 0원</span>
+        </div>
+        <p class="card-note">공부를 마칠 때마다 정한 금액(100원·50원)씩 용돈기입장에 쌓여요. 고정 항목은 매일 아침 자동으로 올라와요.</p>
+        <div class="btn-row">
+          <button class="btn btn--white" data-act="fixed:open">⚙️ 고정 항목</button>
+          <button class="btn btn--soft" data-act="study:add">＋ 공부 추가</button>
+        </div>
+        <div class="seg seg--sky" id="studySeg" role="tablist" aria-label="공부 아이 선택"></div>
+        <div class="progress-line">
+          <div class="progress"><i id="studyBar"></i></div>
+          <b id="studyCount">0 / 0 완료</b>
+        </div>
+
+        <ul class="check-list" id="studyList"></ul>
+      </div>
+
+      <div class="card card--peach timer-card">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">⏱️</span> 공부 타이머</h2>
+          <span class="pill pill--sun">집중해서 해 봐요</span>
+        </div>
+        <div class="timer-box">
+          <div class="seg seg--cream" id="timerMode" role="tablist" aria-label="타이머 방식">
+            <button class="seg-btn is-on" data-act="timer:mode" data-mode="countdown">⏳ 남은 시간</button>
+            <button class="seg-btn" data-act="timer:mode" data-mode="stopwatch">⏱️ 재는 시간</button>
+          </div>
+          <p class="timer-hint" id="timerHint">10분 · 시작을 눌러요</p>
+          <div class="timer-clock" id="timerClock">10:00</div>
+          <div class="timer-track"><i id="timerTrack"></i></div>
+          <div class="btn-row">
+            <button class="btn btn--mint" id="timerStart" data-act="timer:start">▶ 시작</button>
+            <button class="btn btn--white" id="timerPause" data-act="timer:pause" hidden>⏸ 일시정지</button>
+            <button class="btn btn--white" data-act="timer:reset">↺ 초기화</button>
+          </div>
+          <div class="chip-row" id="timerPresets">
+            <button class="chip is-on" data-act="timer:preset" data-min="10">10분</button>
+            <button class="chip" data-act="timer:preset" data-min="20">20분</button>
+            <button class="chip" data-act="timer:preset" data-min="30">30분</button>
+          </div>
+          <div class="timer-custom">
+            <input id="timerCustom" type="number" inputmode="numeric" min="1" max="180" placeholder="직접 입력 (분)" aria-label="직접 입력 분">
+            <button class="btn btn--white" data-act="timer:setmin">분 맞추기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 용돈 ================= -->
+    <section class="panel" id="panel-money" role="tabpanel" aria-labelledby="tab-money" hidden>
+      <div class="card card--cream">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">🐷</span> 용돈기입장</h2>
+        </div>
+        <div class="seg seg--cream" id="moneySeg" role="tablist" aria-label="용돈 아이 선택"></div>
+        <div class="money-total">
+          <span>지금 모은 돈</span>
+          <b id="moneyTotal">0원</b>
+        </div>
+        <div class="money-chips" id="moneyChips"></div>
+        <hr class="divider">
+        <label class="field-label" for="startAmount">시작 금액(이미 모아 둔 돈)</label>
+        <div class="inline-field">
+          <input id="startAmount" type="number" inputmode="numeric" min="0" step="100" value="0">
+          <button class="btn btn--peach" data-act="money:saveStart">저장</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn--mint" data-act="money:deposit">＋ 입금</button>
+          <button class="btn btn--pink" data-act="money:spend">－ 사용</button>
+        </div>
+      </div>
+
+      <div class="card card--white">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">🧾</span> 최근 내역</h2>
+          <span class="pill" id="historyCount">0건</span>
+        </div>
+        <ul id="moneyHistory"></ul>
+      </div>
+
+      <div class="card card--mint">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">📅</span> 매일 공부 적립</h2>
+          <span class="pill pill--mint" id="earnedToday">오늘 +0원</span>
+        </div>
+        <p class="card-note" id="earnedTodayNote">하루에 한 줄로 그날 총액만 보여요.</p>
+        <div class="week-bars" id="weekBars"></div>
+      </div>
+    </section>
+
+    <!-- ================= 할일 ================= -->
+    <section class="panel" id="panel-todo" role="tabpanel" aria-labelledby="tab-todo" hidden>
+      <div class="card card--cream">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">✅</span> 오늘 할 일</h2>
+          <span class="pill" id="todoSummary">0 / 0 완료</span>
+        </div>
+        <p class="card-note">하진·우재·엄마·아빠가 각자 할 일을 체크해요. 연필로 고치고 ✕로 지울 수 있어요.</p>
+      </div>
+      <div id="todoList"></div>
+    </section>
+
+    <!-- ================= 채팅 ================= -->
+    <section class="panel" id="panel-chat" role="tabpanel" aria-labelledby="tab-chat" hidden>
+      <div class="card chat-card">
+        <div class="card-head">
+          <h2 class="card-title"><span class="tw">💬</span> 우리 가족 채팅</h2>
+          <span class="pill pill--white" id="chatCount">0개</span>
+        </div>
+        <p class="card-note">말풍선과 가족 캐릭터 스티커로 이야기해요. 하트를 눌러 마음을 남겨 보세요.</p>
+        <div class="seg seg--pink seg--chat" id="chatSender" role="tablist" aria-label="보내는 사람"></div>
+        <div class="chat-stream" id="chatStream"></div>
+        <div class="sticker-panel" id="stickerPanel" hidden></div>
+        <div class="chat-input">
+          <button class="ibtn" data-act="chat:stickerToggle" aria-label="스티커 고르기" id="stickerToggle">😊</button>
+          <input id="chatInput" type="text" placeholder="메시지를 적어 보세요" aria-label="메시지 입력">
+          <button class="btn btn--pink" data-act="chat:send">보내기</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ================= 하단 탭 ================= -->
+<nav class="tabbar" role="tablist" aria-label="기록장 메뉴">
+  <button class="tab is-active" id="tab-home" role="tab" aria-selected="true" data-act="tab:switch" data-tab="home">
+    <svg><use href="#ic-home"></use></svg><span>홈</span>
+  </button>
+  <button class="tab" id="tab-study" role="tab" aria-selected="false" data-act="tab:switch" data-tab="study">
+    <svg><use href="#ic-book"></use></svg><span>공부</span>
+  </button>
+  <button class="tab" id="tab-money" role="tab" aria-selected="false" data-act="tab:switch" data-tab="money">
+    <svg><use href="#ic-wallet"></use></svg><span>용돈</span>
+  </button>
+  <button class="tab" id="tab-todo" role="tab" aria-selected="false" data-act="tab:switch" data-tab="todo">
+    <svg><use href="#ic-check"></use></svg><span>할일</span>
+  </button>
+  <button class="tab" id="tab-chat" role="tab" aria-selected="false" data-act="tab:switch" data-tab="chat">
+    <svg><use href="#ic-chat"></use></svg><span>채팅</span>
+  </button>
+</nav>
+
+<div class="modal-root" id="modalRoot" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:16px;text-align:center;">이 기록장은 자바스크립트가 필요해요. 브라우저 설정에서 자바스크립트를 켜 주세요.</p></noscript>
+
+<!-- Firebase (가족 공용 저장소 · 실시간 동기화) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+<script>
+/* ============================================================
+   우리 가족 기록장 — 앱 스크립트
+   localStorage 저장 + Firebase Realtime Database 실시간 동기화
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var KEY = 'family-dashboard-v1';
+  var WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+
+  var FAMILY = {
+    hajin:  { name: '하진', sub: '첫째', av: 'av-hajin',  tint: 'hajin',  kid: true },
+    woojae: { name: '우재', sub: '둘째', av: 'av-woojae', tint: 'woojae', kid: true },
+    mom:    { name: '엄마', sub: '우리 집 요리 담당', av: 'av-mom',    tint: 'mom',    kid: false },
+    dad:    { name: '아빠', sub: '우리 집 기록 담당', av: 'av-dad',    tint: 'dad',    kid: false }
+  };
+  var KID_ORDER = ['hajin', 'woojae'];
+  var ORDER = ['hajin', 'woojae', 'mom', 'dad'];
+
+  var MISSIONS = [
+    { e: '🥕', t: '저녁 준비 같이 돕기' },
+    { e: '🧦', t: '빨래 개기 함께 하기' },
+    { e: '🚶', t: '가족 산책 15분' },
+    { e: '🎲', t: '보드게임 한 판' },
+    { e: '🍽️', t: '다 같이 설거지' },
+    { e: '📖', t: '소리 내어 책 읽어 주기' },
+    { e: '🪴', t: '화분 물 주기' },
+    { e: '🧹', t: '거실 5분 정리' },
+    { e: '🎵', t: '좋아하는 노래 함께 부르기' },
+    { e: '📷', t: '오늘 가족 사진 남기기' },
+    { e: '💌', t: '서로 칭찬 한 마디' },
+    { e: '🌙', t: '잠들기 전 오늘 이야기 나누기' },
+    { e: '🥛', t: '다 같이 물 한 잔 마시기' },
+    { e: '⚽', t: '우재랑 공놀이 10분' }
+  ];
+
+  var STICKERS = [
+    { k: 'av-hajin',  label: '하진 고양이' },
+    { k: 'av-woojae', label: '우재 병아리' },
+    { k: 'av-mom',    label: '엄마 토끼' },
+    { k: 'av-dad',    label: '아빠 곰' },
+    { k: '🥰', label: '하트 눈' },
+    { k: '🎉', label: '축하' },
+    { k: '👍', label: '최고' },
+    { k: '🌙', label: '잘 자' }
+  ];
+
+  /* ---------------- 작은 도구들 ---------------- */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function uid() { return 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+  function fmt(n) {
+    var v = Math.round(Number(n) || 0);
+    return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function won(n) { return fmt(n) + '원'; }
+  function num(v, fallback) {
+    var n = Number(v);
+    return isFinite(n) ? n : fallback;
+  }
+  function clamp(n, lo, hi) { return Math.min(hi, Math.max(lo, n)); }
+
+  /* ---------------- 날짜 ---------------- */
+  function dayKey(d) {
+    var x = d || new Date();
+    return x.getFullYear() + '-' + pad2(x.getMonth() + 1) + '-' + pad2(x.getDate());
+  }
+  function todayKey() { return dayKey(); }
+  function todayLabel() {
+    var d = new Date();
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일 ' + WEEK[d.getDay()] + '요일';
+  }
+  function shortDate(key) {
+    var p = String(key).split('-');
+    if (p.length !== 3) { return key; }
+    return Number(p[1]) + '월 ' + Number(p[2]) + '일';
+  }
+  function timeLabel(ts) {
+    var d = new Date(ts);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var hh = h % 12; if (hh === 0) { hh = 12; }
+    return (h < 12 ? '오전 ' : '오후 ') + hh + ':' + pad2(m);
+  }
+  function atHour(h, m) {
+    var d = new Date(); d.setHours(h, m, 0, 0); return d.getTime();
+  }
+
+  /* ---------------- 기본 상태 ---------------- */
+  function newItem(text, reward, fixed) {
+    return { id: uid(), text: text, reward: reward, fixed: !!fixed, done: false };
+  }
+  function newTodo(text) { return { id: uid(), text: text, done: false }; }
+
+  function defaults() {
+    return {
+      v: 1,
+      day: todayKey(),
+      together: 0,
+      mission: 0,
+      missionDay: todayKey(),
+      kids: {
+        hajin: {
+          start: 44200,
+          items: [
+            newItem('수학 문제집 3쪽', 100, true),
+            newItem('영어 단어 20개', 100, true),
+            newItem('독서 30분', 50, false)
+          ],
+          ledger: [],
+          entries: [],
+          stamps: {}
+        },
+        woojae: {
+          start: 18000,
+          items: [
+            newItem('한글 따라쓰기', 100, true),
+            newItem('숫자 놀이', 50, false),
+            newItem('그림책 읽기', 50, true)
+          ],
+          ledger: [],
+          entries: [],
+          stamps: {}
+        }
+      },
+      todos: {
+        hajin:  [newTodo('책 30분 읽기'), newTodo('내일 준비물 챙기기'), newTodo('공부하기')],
+        woojae: [newTodo('장난감 정리하기'), newTodo('양치 3번 하기'), newTodo('그림책 1권 읽기')],
+        mom:    [newTodo('저녁 준비하기'), newTodo('하진 준비물 확인'), newTodo('빨래 정리하기')],
+        dad:    [newTodo('학교 서류 정리'), newTodo('우재 목욕시키기'), newTodo('설거지하기')]
+      },
+      chat: [
+        { id: 'seed-1', from: 'mom', kind: 'text', text: '오늘 저녁은 김치찌개 어때요? 🍲', ts: atHour(8, 12), hearts: 1, hearted: false },
+        { id: 'seed-2', from: 'woojae', kind: 'sticker', sticker: 'av-woojae', ts: atHour(12, 30), hearts: 2, hearted: false },
+        { id: 'seed-3', from: 'dad', kind: 'text', text: '하진이 숙제 끝나면 같이 산책하자 🌙', ts: atHour(19, 5), hearts: 0, hearted: false }
+      ],
+      chatSender: 'mom',
+      ui: { tab: 'home', stampKid: 'hajin', studyKid: 'hajin', moneyKid: 'hajin' }
+    };
+  }
+
+  var state = defaults();
+
+  /* ---------------- 저장 · 복구 ---------------- */
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (e) { /* 저장 공간이 없어도 화면은 계속 동작합니다 */ }
+    schedulePush();   /* 가족 모두의 기기에 실시간으로 보냅니다 */
+  }
+
+  function sanitizeItem(raw) {
+    if (!raw || typeof raw !== 'object') { return null; }
+    var text = String(raw.text == null ? '' : raw.text).slice(0, 80);
+    if (!text) { return null; }
+    return {
+      id: raw.id ? String(raw.id) : uid(),
+      text: text,
+      reward: clamp(num(raw.reward, 100), 0, 100000),
+      fixed: !!raw.fixed,
+      done: !!raw.done
+    };
+  }
+  function sanitizeTodo(raw) {
+    if (!raw || typeof raw !== 'object') { return null; }
+    var text = String(raw.text == null ? '' : raw.text).slice(0, 80);
+    if (!text) { return null; }
+    return { id: raw.id ? String(raw.id) : uid(), text: text, done: !!raw.done };
+  }
+  function sanitizeMsg(raw) {
+    if (!raw || typeof raw !== 'object') { return null; }
+    if (!FAMILY[raw.from]) { return null; }
+    var kind = raw.kind === 'sticker' ? 'sticker' : 'text';
+    var m = {
+      id: raw.id ? String(raw.id) : uid(),
+      from: raw.from,
+      kind: kind,
+      ts: num(raw.ts, Date.now()),
+      hearts: clamp(num(raw.hearts, 0), 0, 9999),
+      hearted: !!raw.hearted
+    };
+    if (kind === 'text') {
+      m.text = String(raw.text == null ? '' : raw.text).slice(0, 400);
+      if (!m.text) { return null; }
+    } else {
+      m.sticker = String(raw.sticker == null ? '🥰' : raw.sticker).slice(0, 40);
+    }
+    return m;
+  }
+
+  function normalize(raw) {
+    if (!raw || typeof raw !== 'object' || raw.v !== 1) { return null; }
+    var d = defaults();
+    d.day = raw.day ? String(raw.day) : d.day;
+    d.together = clamp(num(raw.together, 0), 0, 100000);
+    d.mission = clamp(num(raw.mission, 0), 0, MISSIONS.length - 1);
+    d.missionDay = raw.missionDay ? String(raw.missionDay) : d.missionDay;
+
+    KID_ORDER.forEach(function (k) {
+      var src = (raw.kids && raw.kids[k]) || {};
+      var dst = d.kids[k];
+      dst.start = clamp(num(src.start, dst.start), 0, 100000000);
+      if (Array.isArray(src.items)) {
+        dst.items = src.items.map(sanitizeItem).filter(Boolean);
+      }
+      if (Array.isArray(src.ledger)) {
+        dst.ledger = src.ledger.filter(function (x) {
+          return x && typeof x === 'object' && x.date;
+        }).map(function (x) {
+          return {
+            id: x.id ? String(x.id) : uid(),
+            date: String(x.date),
+            itemId: x.itemId ? String(x.itemId) : '',
+            text: String(x.text == null ? '' : x.text).slice(0, 80),
+            amount: clamp(num(x.amount, 0), 0, 100000)
+          };
+        });
+      }
+      if (Array.isArray(src.entries)) {
+        dst.entries = src.entries.filter(function (x) {
+          return x && typeof x === 'object' && (x.type === 'deposit' || x.type === 'spend');
+        }).map(function (x) {
+          return {
+            id: x.id ? String(x.id) : uid(),
+            type: x.type,
+            amount: clamp(num(x.amount, 0), 0, 100000000),
+            memo: String(x.memo == null ? '' : x.memo).slice(0, 40),
+            date: x.date ? String(x.date) : todayKey(),
+            ts: num(x.ts, Date.now())
+          };
+        });
+      }
+      if (src.stamps && typeof src.stamps === 'object') {
+        var stamps = {};
+        Object.keys(src.stamps).forEach(function (k2) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(k2) && src.stamps[k2]) { stamps[k2] = true; }
+        });
+        dst.stamps = stamps;
+      }
+    });
+
+    ORDER.forEach(function (k) {
+      if (Array.isArray(raw.todos && raw.todos[k])) {
+        d.todos[k] = raw.todos[k].map(sanitizeTodo).filter(Boolean);
+      }
+    });
+
+    if (Array.isArray(raw.chat)) {
+      d.chat = raw.chat.map(sanitizeMsg).filter(Boolean).slice(-120);
+    }
+    if (FAMILY[raw.chatSender]) { d.chatSender = raw.chatSender; }
+    if (raw.ui && typeof raw.ui === 'object') {
+      if (['home', 'study', 'money', 'todo', 'chat'].indexOf(raw.ui.tab) >= 0) { d.ui.tab = raw.ui.tab; }
+      if (KID_ORDER.indexOf(raw.ui.stampKid) >= 0) { d.ui.stampKid = raw.ui.stampKid; }
+      if (KID_ORDER.indexOf(raw.ui.studyKid) >= 0) { d.ui.studyKid = raw.ui.studyKid; }
+      if (KID_ORDER.indexOf(raw.ui.moneyKid) >= 0) { d.ui.moneyKid = raw.ui.moneyKid; }
+    }
+    return d;
+  }
+
+  function load() {
+    var raw = null;
+    try { raw = localStorage.getItem(KEY); } catch (e) { raw = null; }
+    var parsed = null;
+    if (raw) { try { parsed = JSON.parse(raw); } catch (e) { parsed = null; } }
+    var loaded = normalize(parsed);
+    state = loaded || defaults();
+  }
+
+  /* ============================================================
+     가족 공용 저장소 (Firebase Realtime Database)
+     네 사람의 기기에서 같은 기록을 보고, 바뀌면 바로 같이 바뀝니다.
+     ============================================================ */
+  var FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyAVuP6U5WZKJWPIFfz9eQh_YwqOK06K9AM',
+    authDomain: 'our-family-board-3d3ba.firebaseapp.com',
+    databaseURL: 'https://our-family-board-3d3ba-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'our-family-board-3d3ba',
+    storageBucket: 'our-family-board-3d3ba.firebasestorage.app',
+    messagingSenderId: '981984937936',
+    appId: '1:981984937936:web:4312e188a3906a194bdbd5'
+  };
+  /* 데이터베이스 안의 비밀 경로 — 이 값을 모르면 기록에 손댈 수 없어요. */
+  var DB_PATH = 'fam/y3fj7m4ne4ki6lqmq0vg';
+  var DEFAULT_PIN = '0408';
+  var PIN_KEY = 'family-dashboard-pin-device';
+  var UNLOCK_KEY = 'family-dashboard-unlocked';
+  var SENDER_KEY = 'family-dashboard-sender';
+  var DEVICE_KEY = 'family-dashboard-device';
+
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+
+  var DEVICE_ID = (function () {
+    var v = lsGet(DEVICE_KEY);
+    if (!v) { v = 'd' + Math.random().toString(36).slice(2, 10); lsSet(DEVICE_KEY, v); }
+    return v;
+  })();
+
+  var sync = { ready: false, root: null, timer: null, lastAppliedAt: 0, dirtyAt: 0, conn: 'off', pinFromDb: null };
+  var appStarted = false;
+  var mySends = {};          /* 방금 내가 보낸 채팅 — 다른 기기 소식과 합질 때 살려 둡니다 */
+  var bootAt = Date.now();
+
+  function cloudPayload() {
+    var stamp = (typeof firebase !== 'undefined' && firebase.database && firebase.database.ServerValue)
+      ? firebase.database.ServerValue.TIMESTAMP : Date.now();
+    return {
+      v: 1,
+      day: state.day,
+      together: state.together,
+      mission: state.mission,
+      missionDay: state.missionDay,
+      kids: state.kids,
+      todos: state.todos,
+      chat: state.chat,
+      by: DEVICE_ID,
+      at: stamp
+    };
+  }
+
+  function schedulePush() {
+    if (!sync.ready) { return; }
+    sync.dirtyAt = Date.now();   /* 방금 고친 내용을 올리는 중 — 그사이 들어온 옛 소식은 잠시 미룹니다 */
+    clearTimeout(sync.timer);
+    sync.timer = setTimeout(pushCloud, 180);
+  }
+
+  function pushCloud() {
+    if (!sync.ready) { return; }
+    clearTimeout(sync.timer);
+    sync.root.child('board').set(cloudPayload()).catch(function () {
+      setConn('off');
+    });
+  }
+
+  function setConn(conn) {
+    var was = sync.conn;
+    sync.conn = conn;
+    var dot = $('#syncDot'), label = $('#syncLabel');
+    if (dot) { dot.className = 'sync-dot' + (conn === 'on' ? ' is-on' : (conn === 'off' ? ' is-off' : '')); }
+    if (label) { label.textContent = conn === 'on' ? '가족 모두와 연결됨' : (conn === 'off' ? '이 기기에만 저장되는 중' : '연결하는 중'); }
+    if (conn === 'off' && was === 'on' && appStarted) {
+      toast('인터넷이 끊겨 이 기기에만 저장하고 있어요');
+    }
+  }
+
+  function startCloud() {
+    if (sync.ready) { return; }
+    if (typeof firebase === 'undefined' || !firebase.initializeApp) { setConn('off'); return; }
+    try {
+      if (!firebase.apps.length) { firebase.initializeApp(FIREBASE_CONFIG); }
+      sync.root = firebase.database().ref(DB_PATH);
+    } catch (e) { setConn('off'); return; }
+    sync.ready = true;
+    setConn('off');
+
+    try {
+      firebase.database().ref('.info/connected').on('value', function (snap) {
+        setConn(snap.val() ? 'on' : 'off');
+      });
+    } catch (e) { /* 연결 상태를 못 보더라도 동기화는 계속합니다 */ }
+
+    /* 가족 PIN은 데이터베이스에 하나로 보관합니다(기기끼리 같은 PIN). */
+    sync.root.child('meta/pin').on('value', function (snap) {
+      var v = snap.val();
+      if (v && /^\d{4}$/.test(String(v))) {
+        sync.pinFromDb = String(v);
+        lsSet(PIN_KEY, sync.pinFromDb);
+      } else if (!lsGet(PIN_KEY)) {
+        sync.root.child('meta/pin').set(DEFAULT_PIN).catch(function () {});
+        sync.pinFromDb = DEFAULT_PIN;
+      }
+      var label = $('#pinStateLabel');
+      if (label) { label.textContent = 'PIN을 바꾸면 가족 모두에게 똑같이 적용돼요'; }
+    }, function () {});
+
+    sync.root.child('board').on('value', function (snap) {
+      var raw = snap.val();
+      if (!raw) { pushCloud(); return; }   /* 첫 기록이면 이 기기 기록을 올립니다 */
+      if (raw.by === DEVICE_ID) { return; }   /* 내가 올린 내용은 이 기기에 이미 있습니다 */
+      if (Date.now() - sync.dirtyAt < 1200) { return; }   /* 내가 고친 내용을 올리는 중이면 이 기기 기록이 더 새롭습니다 */
+      var at = num(raw.at, 0);
+      if (at && at <= sync.lastAppliedAt) { return; }   /* 나중 소식을 이미 받았으면 옛 소식은 건너뜁니다 */
+      if (at) { sync.lastAppliedAt = at; }
+      applyCloud(raw);
+    }, function () {
+      setConn('off');
+    });
+  }
+
+  function mergeChat(a, b) {
+    var out = [], seen = {};
+    (a || []).concat(b || []).forEach(function (m) {
+      if (!m || !m.id || seen[m.id]) { return; }
+      seen[m.id] = true;
+      out.push(m);
+    });
+    out.sort(function (x, y) { return num(x.ts, 0) - num(y.ts, 0); });
+    return out.slice(-200);
+  }
+
+  function stateSig() {
+    try {
+      return JSON.stringify([state.day, state.together, state.mission, state.missionDay, state.kids, state.todos, state.chat]);
+    } catch (e) { return ''; }
+  }
+
+  function applyCloud(raw) {
+    var incoming = normalize(raw);
+    if (!incoming) { return; }
+    var before = stateSig();
+    var myChat = state.chat;
+    var mySender = state.chatSender;
+    var myUi = state.ui;
+
+    state = incoming;
+    state.chatSender = mySender;   /* 누구로 보낼지는 기기마다 다릅니다 */
+    state.ui = myUi;               /* 열어 둔 탭도 기기마다 다릅니다 */
+
+    var merged = state.chat;
+    var cut = Date.now() - 15000;
+    var mine = [];
+    (myChat || []).forEach(function (m) {
+      if (m && mySends[m.id] && mySends[m.id] > cut) { mine.push(m); }
+    });
+    Object.keys(mySends).forEach(function (id) {
+      if (Date.now() - mySends[id] > 60000) { delete mySends[id]; }
+    });
+    if (mine.length) { merged = mergeChat(mine, state.chat); }   /* 방금 내가 보낸 말은 지워지지 않습니다 */
+    var grew = merged.length !== state.chat.length;
+    state.chat = merged;
+
+    var rolled = ensureToday();    /* 자정이 지났으면 DB에 적힌 날짜를 기준으로 새 날 시작 */
+    syncStamps();
+    var changed = stateSig() !== before;
+    if (!changed && !rolled) { return; }   /* 바뀐 게 없으면 화면을 그리지 않습니다(누르는 순간 버튼이 사라지는 일 줄이기) */
+    lsSet(KEY, JSON.stringify(state));
+
+    if (appStarted) { renderAll(); }
+    if (grew || rolled) { schedulePush(); }
+  }
+
+  /* ============================================================
+     통영 실시간 날씨 · 미세먼지 (Open-Meteo 무료 API)
+     ============================================================ */
+  var WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=34.8544&longitude=128.4332&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul';
+  var AIR_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=34.8544&longitude=128.4332&current=pm10,pm2_5&timezone=Asia%2FSeoul';
+  var weatherNow = null, dustNow = null, weatherTimer = null;
+
+  var SKY = {
+    0: ['☀️', '맑음'], 1: ['🌤️', '대체로 맑음'], 2: ['⛅', '구름 조금'], 3: ['☁️', '흐림'],
+    45: ['🌫️', '안개'], 48: ['🌫️', '안개'],
+    51: ['🌦️', '이슬비'], 53: ['🌦️', '이슬비'], 55: ['🌦️', '이슬비'],
+    56: ['🌧️', '어는 이슬비'], 57: ['🌧️', '어는 이슬비'],
+    61: ['🌧️', '비'], 63: ['🌧️', '비'], 65: ['🌧️', '흐린 비'],
+    66: ['🌧️', '어는 비'], 67: ['🌧️', '어는 비'],
+    71: ['🌨️', '눈'], 73: ['🌨️', '눈'], 75: ['❄️', '폭설'], 77: ['🌨️', '싸락눈'],
+    80: ['🌦️', '소나기'], 81: ['🌦️', '소나기'], 82: ['⛈️', '센 소나기'],
+    85: ['🌨️', '눈 소나기'], 86: ['❄️', '센 눈 소나기'],
+    95: ['⛈️', '천둥번개'], 96: ['⛈️', '우박'], 99: ['⛈️', '우박']
+  };
+
+  function skyOf(code) {
+    return SKY[code] || (code >= 51 ? ['🌧️', '비'] : ['🌤️', '맑은 편']);
+  }
+  function dustGrade(kind, v) {
+    if (typeof v !== 'number' || !isFinite(v)) { return null; }
+    var cuts = kind === 'pm25' ? [15, 35, 75] : [30, 80, 150];
+    if (v <= cuts[0]) { return { label: '좋음', cls: 'pill--mint' }; }
+    if (v <= cuts[1]) { return { label: '보통', cls: 'pill--sun' }; }
+    if (v <= cuts[2]) { return { label: '나쁨', cls: 'pill--pink' }; }
+    return { label: '매우 나쁨', cls: 'pill--pink' };
+  }
+
+  function getJSON(url, ms) {
+    return new Promise(function (resolve, reject) {
+      var done = false;
+      var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timer = setTimeout(function () {
+        if (done) { return; }
+        done = true;
+        if (ctl) { try { ctl.abort(); } catch (e) {} }
+        reject(new Error('timeout'));
+      }, ms);
+      var opt = ctl ? { signal: ctl.signal, cache: 'no-store' } : { cache: 'no-store' };
+      fetch(url, opt).then(function (r) {
+        if (!r.ok) { throw new Error('http ' + r.status); }
+        return r.json();
+      }).then(function (j) {
+        if (done) { return; }
+        done = true; clearTimeout(timer); resolve(j);
+      }).catch(function (e) {
+        if (done) { return; }
+        done = true; clearTimeout(timer); reject(e);
+      });
+    });
+  }
+
+  function paintWeather() {
+    var box = $('#weatherBadge');
+    if (!box) { return; }
+    if (!weatherNow) {
+      box.innerHTML = '<span class="weather-ic">🌤️</span>'
+        + '<span class="weather-main">통영 <b>—°</b> <span>날씨를 불러오는 중</span></span>'
+        + '<span class="weather-tip">인터넷이 연결되면 실제 날씨가 보여요</span>';
+      return;
+    }
+    var sky = skyOf(weatherNow.code);
+    var g10 = dustNow ? dustGrade('pm10', dustNow.pm10) : null;
+    var g25 = dustNow ? dustGrade('pm25', dustNow.pm25) : null;
+    var main = '통영 <b>' + Math.round(weatherNow.t) + '°</b> <span>' + sky[1];
+    if (isFinite(weatherNow.tmax) && isFinite(weatherNow.tmin)) {
+      main += ' · 최고 ' + Math.round(weatherNow.tmax) + '° 최저 ' + Math.round(weatherNow.tmin) + '°';
+    }
+    main += '</span>';
+    var pill = g10
+      ? '<span class="pill ' + g10.cls + '">미세먼지 ' + g10.label + '</span>'
+      : '<span class="pill pill--soft">미세먼지 —</span>';
+    var tip;
+    if (weatherNow.code >= 51) { tip = '☔ 우산을 챙기면 좋아요'; }
+    else if (g25 && (g25.label === '나쁨' || g25.label === '매우 나쁨')) { tip = '😷 마스크를 챙겨 주세요'; }
+    else if (isFinite(weatherNow.tmax) && isFinite(weatherNow.tmin) && (weatherNow.tmax - weatherNow.tmin) >= 10) { tip = '🧥 일교차가 커요'; }
+    else { tip = '🌿 나들이 하기 좋은 날이에요'; }
+    if (g25) { tip += ' · 초미세먼지 ' + g25.label; }
+    box.innerHTML = '<span class="weather-ic">' + sky[0] + '</span>'
+      + '<span class="weather-main">' + main + '</span>'
+      + pill
+      + '<span class="weather-tip">' + tip + '</span>';
+  }
+
+  function loadWeather() {
+    getJSON(WEATHER_URL, 8000).then(function (j) {
+      var cur = (j && j.current) || {};
+      var daily = (j && j.daily) || {};
+      weatherNow = {
+        t: num(cur.temperature_2m, NaN),
+        code: num(cur.weather_code, NaN),
+        tmax: num((daily.temperature_2m_max || [])[0], NaN),
+        tmin: num((daily.temperature_2m_min || [])[0], NaN)
+      };
+      if (!isFinite(weatherNow.t)) { weatherNow = null; }
+      paintWeather();
+    }).catch(function () { paintWeather(); });
+
+    getJSON(AIR_URL, 8000).then(function (j) {
+      var cur = (j && j.current) || {};
+      var p10 = num(cur.pm10, NaN), p25 = num(cur.pm2_5, NaN);
+      dustNow = (isFinite(p10) || isFinite(p25)) ? { pm10: p10, pm25: p25 } : null;
+      paintWeather();
+    }).catch(function () { paintWeather(); });
+
+    clearTimeout(weatherTimer);
+    weatherTimer = setTimeout(loadWeather, 600000);   /* 10분마다 새로 */
+  }
+
+  /* ============================================================
+     가족 입장 잠금 (4자리 PIN)
+     ============================================================ */
+  var lockBuf = '';
+
+  function currentPin() {
+    if (sync.pinFromDb) { return sync.pinFromDb; }
+    var p = lsGet(PIN_KEY);
+    return /^\d{4}$/.test(p || '') ? p : DEFAULT_PIN;
+  }
+
+  function savePin(pin) {
+    pin = String(pin || '').replace(/\D/g, '').slice(0, 4);
+    if (!/^\d{4}$/.test(pin)) { return false; }
+    lsSet(PIN_KEY, pin);
+    sync.pinFromDb = pin;
+    if (sync.ready) { sync.root.child('meta/pin').set(pin).catch(function () {}); }
+    return true;
+  }
+
+  function renderLockPad() {
+    var pad = $('#lockPad');
+    if (!pad) { return; }
+    var keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'back', '0', 'ok'];
+    pad.innerHTML = keys.map(function (k) {
+      if (k === 'back') { return '<button class="lock-key lock-key--soft" data-act="lock:back" aria-label="지우기">⌫</button>'; }
+      if (k === 'ok') { return '<button class="lock-key lock-key--soft" data-act="lock:ok">확인</button>'; }
+      return '<button class="lock-key" data-act="lock:key" data-key="' + k + '">' + k + '</button>';
+    }).join('');
+  }
+
+  function paintLock() {
+    $$('#lockDots .lock-dot').forEach(function (d, i) { d.classList.toggle('is-on', i < lockBuf.length); });
+  }
+
+  function showLock() {
+    var lock = $('#lockScreen');
+    if (!lock) { return; }
+    document.body.classList.add('is-locked');
+    lock.hidden = false;
+    renderLockPad();
+    lockBuf = '';
+    paintLock();
+    var msg = $('#lockMsg');
+    if (msg) { msg.textContent = ''; }
+  }
+
+  function hideLock() {
+    var lock = $('#lockScreen');
+    if (lock) { lock.hidden = true; }
+    document.body.classList.remove('is-locked');
+    var card = $('#lockCard');
+    if (card) { card.classList.remove('is-bad'); }
+  }
+
+  function lockBad() {
+    var msg = $('#lockMsg'), card = $('#lockCard');
+    if (msg) { msg.textContent = 'PIN이 맞지 않아요. 다시 눌러 주세요.'; }
+    if (card) {
+      card.classList.remove('is-bad');
+      void card.offsetWidth;
+      card.classList.add('is-bad');
+    }
+    lockBuf = '';
+    paintLock();
+  }
+
+  function tryUnlock(depth) {
+    depth = depth || 0;
+    if (lockBuf.length !== 4) { return; }
+    /* 방금 연 기기라 가족 PIN을 아직 받지 못했으면 잠깐 기다렸다 확인합니다 */
+    if (depth === 0 && sync.ready && !sync.pinFromDb && !lsGet(PIN_KEY) && (Date.now() - bootAt) < 8000) {
+      setTimeout(function () { tryUnlock(1); }, 900);
+      return;
+    }
+    if (lockBuf === currentPin()) {
+      lsSet(UNLOCK_KEY, '1');
+      lockBuf = '';
+      paintLock();
+      startApp();
+      hideLock();
+      return;
+    }
+    lockBad();
+  }
+
+  function startApp() {
+    if (appStarted) { return; }
+    appStarted = true;
+    load();
+    ensureToday();
+    syncStamps();
+    var sender = lsGet(SENDER_KEY);
+    if (sender && FAMILY[sender]) { state.chatSender = sender; }
+    renderStickerPanel();
+    renderAll();
+    setTab(state.ui.tab || 'home', true);
+    startCloud();
+    save();
+    setInterval(function () {
+      if (dayKey() !== state.day) {
+        ensureToday();
+        syncStamps();
+        save();
+        renderAll();
+        toast('새로운 하루예요! 오늘의 미션도 새로 뽑았어요 🌅');
+      }
+    }, 30000);
+  }
+  
+  /* ---------------- 계산 도우미 ---------------- */
+  function items(k) { return state.kids[k].items; }
+  function findItem(k, id) {
+    var list = items(k);
+    for (var i = 0; i < list.length; i++) { if (list[i].id === id) { return list[i]; } }
+    return null;
+  }
+  function doneItems(k) {
+    return items(k).filter(function (it) { return it.done; });
+  }
+  function todosOf(k) { return state.todos[k]; }
+  function todoDone(k) {
+    return todosOf(k).filter(function (t) { return t.done; }).length;
+  }
+  function earnedTotal(k) {
+    return state.kids[k].ledger.reduce(function (s, L) { return s + L.amount; }, 0);
+  }
+  function earnedToday(k) {
+    var tk = todayKey();
+    return state.kids[k].ledger.reduce(function (s, L) { return s + (L.date === tk ? L.amount : 0); }, 0);
+  }
+  function sumEntries(k, type) {
+    return state.kids[k].entries.reduce(function (s, e) { return s + (e.type === type ? e.amount : 0); }, 0);
+  }
+  function money(k) {
+    return state.kids[k].start + earnedTotal(k) + sumEntries(k, 'deposit') - sumEntries(k, 'spend');
+  }
+  function todayActive(k) {
+    return doneItems(k).length > 0 || todoDone(k) > 0;
+  }
+  function syncStamps() {
+    var tk = todayKey();
+    KID_ORDER.forEach(function (k) {
+      if (todayActive(k)) { state.kids[k].stamps[tk] = true; }
+      else { delete state.kids[k].stamps[tk]; }
+    });
+  }
+  function streak(k) {
+    var stamps = state.kids[k].stamps;
+    var d = new Date();
+    var count = 0;
+    if (!stamps[dayKey(d)]) { d.setDate(d.getDate() - 1); }
+    while (count < 400) {
+      if (stamps[dayKey(d)]) { count++; d.setDate(d.getDate() - 1); }
+      else { break; }
+    }
+    return count;
+  }
+  function monthStampCount(k, y, m) {
+    var d = new Date();
+    var yy = (typeof y === 'number') ? y : d.getFullYear();
+    var mm = (typeof m === 'number') ? m : d.getMonth();
+    var head = yy + '-' + pad2(mm + 1);
+    var stamps = state.kids[k].stamps;
+    return Object.keys(stamps).filter(function (key) { return key.indexOf(head) === 0; }).length;
+  }
+
+  /* ---------------- 토스트 · 시트 ---------------- */
+  var toastTimer = null;
+  function toast(msg) {
+    var el = $('#toast');
+    if (!el) { return; }
+    el.textContent = msg;
+    el.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('is-on'); }, 2200);
+  }
+
+  function openSheet(title, bodyHTML) {
+    var root = $('#modalRoot');
+    root.innerHTML = '<div class="modal-blind" data-act="modal:close"></div>'
+      + '<div class="sheet" role="dialog" aria-modal="true">'
+      + '<div class="sheet-grip"></div>'
+      + '<div class="sheet-head"><h3 class="sheet-title">' + title + '</h3>'
+      + '<button class="sheet-close" data-act="modal:close" aria-label="닫기">✕</button></div>'
+      + bodyHTML + '</div>';
+    root.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSheet() {
+    var root = $('#modalRoot');
+    if (!root || root.hidden) { return; }
+    root.hidden = true;
+    root.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  /* ---------------- 조각 렌더 ---------------- */
+  function segHTML(kind, ids, active) {
+    return ids.map(function (k) {
+      var f = FAMILY[k];
+      var on = k === active;
+      return '<button class="seg-btn' + (on ? ' is-on' : '') + '" role="tab" aria-selected="' + (on ? 'true' : 'false') + '" data-act="' + kind + '" data-child="' + k + '">'
+        + '<span class="seg-av"><svg class="av"><use href="#' + f.av + '"></use></svg></span>'
+        + '<span>' + f.name + '</span></button>';
+    }).join('');
+  }
+
+  function renderFamily() {
+    var tk = todayKey();
+    $('#familyList').innerHTML = ORDER.map(function (k) {
+      var f = FAMILY[k];
+      var sub, right;
+      if (f.kid) {
+        sub = '오늘 공부 ' + doneItems(k).length + '/' + items(k).length + ' · ' + (state.kids[k].stamps[tk] ? '도장 찍음' : '도장 아직');
+        right = '<span class="stat stat--star" title="이번 달 도장"><svg class="stat-ic"><use href="#ic-star"></use></svg>' + monthStampCount(k) + '</span>'
+          + '<span class="stat stat--money" title="지금 모은 돈">🐷 ' + fmt(money(k)) + '원</span>';
+      } else {
+        var td = todoDone(k), tt = todosOf(k).length;
+        sub = '오늘 할 일 ' + td + '/' + tt + ' 완료';
+        right = '<span class="stat" title="오늘 할 일">✅ ' + td + '/' + tt + '</span>'
+          + '<span class="stat stat--star" title="함께한 가족 미션"><svg class="stat-ic"><use href="#ic-star"></use></svg>' + state.together + '</span>';
+      }
+      return '<button class="person" data-act="family:open" data-child="' + k + '">'
+        + '<span class="av-wrap"><svg class="av"><use href="#' + f.av + '"></use></svg></span>'
+        + '<span class="person-main"><span class="person-name">' + f.name + '</span>'
+        + '<span class="person-sub">' + esc(sub) + '</span></span>'
+        + '<span class="person-stats">' + right + '</span></button>';
+    }).join('');
+  }
+
+  function renderMission() {
+    var m = MISSIONS[state.mission] || MISSIONS[0];
+    $('#missionEmoji').textContent = m.e;
+    $('#missionText').textContent = m.t;
+    $('#missionCount').textContent = String(state.together);
+  }
+
+  function renderStamp() {
+    var k = state.ui.stampKid;
+    var f = FAMILY[k];
+    var tk = todayKey();
+    $('#stampTitle').innerHTML = '<span class="tw">🌸</span> ' + f.name + ' 도장판';
+    $('#stampSeg').innerHTML = segHTML('stamp:child', KID_ORDER, k);
+
+    var now = new Date();
+    var dow = (now.getDay() + 6) % 7;   /* 월요일 = 0 */
+    var monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow);
+    var html = '';
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+      var key = dayKey(d);
+      var done = !!state.kids[k].stamps[key];
+      var cls = 'stamp-day' + (key === tk ? ' is-today' : '') + (done ? ' is-done' : '') + (key > tk ? ' is-future' : '');
+      html += '<div class="' + cls + '"><span class="stamp-dow">' + WEEK[d.getDay()] + '</span>'
+        + '<span class="stamp-slot"><span class="stamp-av"><svg class="av"><use href="#' + f.av + '"></use></svg></span></span></div>';
+    }
+    $('#stampDays').innerHTML = html;
+    $('#streakPill').textContent = '🔥 ' + streak(k) + '일 연속';
+    $('#stampMonthPill').textContent = '이번 달 도장 ' + monthStampCount(k) + '개'
+      + (state.kids[k].stamps[tk] ? ' · 오늘 찍음' : '');
+
+    var stampCount = KID_ORDER.filter(function (x) { return state.kids[x].stamps[tk]; }).length;
+    $('#familySummary').textContent = '오늘 도장 ' + stampCount + '개';
+  }
+
+  function studyRowHTML(it) {
+    return '<li class="check-row' + (it.done ? ' is-done' : '') + '">'
+      + '<button class="checkbox' + (it.done ? ' on' : '') + '" data-act="study:toggle" data-id="' + it.id + '" role="checkbox" aria-checked="' + (it.done ? 'true' : 'false') + '" aria-label="' + esc(it.text) + ' 완료"><svg><use href="#ic-tick"></use></svg></button>'
+      + '<span class="check-body"><span class="check-text">' + esc(it.text) + '</span>'
+      + '<span class="check-tags"><span class="tag">🪙 ' + fmt(it.reward) + '원</span>'
+      + (it.fixed ? '<span class="tag tag--fixed">📌 고정</span>' : '') + '</span></span>'
+      + '<span class="icon-actions">'
+      + '<button class="ibtn ibtn--edit" data-act="study:edit" data-id="' + it.id + '" aria-label="공부 항목 수정" title="수정">✏️</button>'
+      + '<button class="ibtn ibtn--del" data-act="study:del" data-id="' + it.id + '" aria-label="공부 항목 삭제" title="삭제">✕</button>'
+      + '</span></li>';
+  }
+
+  function renderStudy() {
+    var k = state.ui.studyKid;
+    $('#studySeg').innerHTML = segHTML('study:child', KID_ORDER, k);
+    var list = items(k);
+    var done = doneItems(k).length;
+    $('#studyCount').textContent = done + ' / ' + list.length + ' 완료';
+    $('#studyBar').style.width = (list.length ? Math.round((done / list.length) * 100) : 0) + '%';
+    $('#studyTodayPill').textContent = '오늘 적립 ' + won(earnedToday(k));
+    $('#studyList').innerHTML = list.length
+      ? list.map(studyRowHTML).join('')
+      : '<li class="empty">오늘 공부 항목이 없어요.<br>“＋ 공부 추가”로 하나 만들어 보세요.</li>';
+  }
+
+  function renderMoney() {
+    var k = state.ui.moneyKid;
+    var kd = state.kids[k];
+    var tk = todayKey();
+    $('#moneySeg').innerHTML = segHTML('money:child', KID_ORDER, k);
+    $('#moneyTotal').textContent = won(money(k));
+    $('#moneyChips').innerHTML = '<span class="pill">시작 금액 ' + won(kd.start) + '</span>'
+      + '<span class="pill pill--mint">공부 적립 +' + won(earnedTotal(k)) + '</span>'
+      + '<span class="pill pill--sky">입금 +' + won(sumEntries(k, 'deposit')) + '</span>'
+      + '<span class="pill pill--pink">사용 －' + won(sumEntries(k, 'spend')) + '</span>';
+
+    var inp = $('#startAmount');
+    if (inp && document.activeElement !== inp) { inp.value = String(kd.start); }
+
+    var rows = [];
+    kd.entries.forEach(function (e) {
+      rows.push({
+        ts: e.ts, type: e.type, date: e.date,
+        title: e.memo || (e.type === 'deposit' ? '입금' : '사용'),
+        amount: e.amount
+      });
+    });
+    var byDay = {};
+    kd.ledger.forEach(function (L) {
+      if (!byDay[L.date]) { byDay[L.date] = { n: 0, amount: 0 }; }
+      byDay[L.date].n++;
+      byDay[L.date].amount += L.amount;
+    });
+    Object.keys(byDay).forEach(function (dt) {
+      var parts = dt.split('-');
+      var ts = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]), 23, 30, 0, 0).getTime();
+      rows.push({ ts: ts, type: 'study', date: dt, title: '공부 적립 ' + byDay[dt].n + '개', amount: byDay[dt].amount });
+    });
+    rows.sort(function (a, b) { return b.ts - a.ts; });
+
+    $('#historyCount').textContent = rows.length + '건';
+    $('#moneyHistory').innerHTML = rows.length ? rows.slice(0, 12).map(function (r) {
+      var isSpend = r.type === 'spend';
+      var ic = r.type === 'study' ? '📚' : (isSpend ? '－' : '＋');
+      var cls = r.type === 'study' ? '' : (isSpend ? ' spend' : '');
+      var sign = isSpend ? '－' : '＋';
+      return '<li class="history-row">'
+        + '<span class="history-ic' + cls + '">' + ic + '</span>'
+        + '<span class="history-main"><span class="history-title">' + esc(r.title) + '</span>'
+        + '<span class="history-date">' + shortDate(r.date) + (r.date === tk ? ' · 오늘' : '') + '</span></span>'
+        + '<span class="history-amount' + cls + '">' + sign + won(r.amount) + '</span></li>';
+    }).join('') : '<li class="empty">아직 내역이 없어요.<br>공부를 마치거나 입금·사용을 적어 보세요.</li>';
+
+    var bars = '';
+    var amounts = [];
+    var maxAmt = 0;
+    for (var bi = 6; bi >= 0; bi--) {
+      var bd = new Date();
+      bd.setDate(bd.getDate() - bi);
+      var bk = dayKey(bd);
+      var bamt = kd.ledger.reduce(function (s2, L) { return s2 + (L.date === bk ? L.amount : 0); }, 0);
+      amounts.push({ dow: WEEK[bd.getDay()], amt: bamt, today: bk === tk });
+      if (bamt > maxAmt) { maxAmt = bamt; }
+    }
+    var hasAny = amounts.some(function (a) { return a.amt > 0; });
+    maxAmt = Math.max(maxAmt, 100);
+    if (!hasAny) {
+      $('#weekBars').innerHTML = '<p class="hint" style="grid-column:1/-1;margin-top:10px">아직 적립 기록이 없어요. 공부를 하나 마치면 여기에 쌓여요.</p>';
+      $('#earnedToday').textContent = '오늘 ＋' + won(earnedToday(k));
+      $('#earnedTodayNote').textContent = shortDate(tk) + ' 오늘 · 공부 완료 ' + doneItems(k).length + '개 · 적립 ' + won(earnedToday(k));
+      return;
+    }
+    bars = amounts.map(function (a) {
+      var h = a.amt > 0 ? Math.round(10 + 44 * (a.amt / maxAmt)) : 5;
+      return '<div class="bar-col' + (a.today ? ' is-today' : '') + (a.amt === 0 ? ' is-zero' : '') + '">'
+        + '<span class="bar-val">' + (a.amt ? fmt(a.amt) : '') + '</span>'
+        + '<span class="bar-rail"><span class="bar" style="height:' + h + 'px"></span></span>'
+        + '<span class="bar-dow">' + a.dow + '</span></div>';
+    }).join('');
+    $('#weekBars').innerHTML = bars;
+
+    $('#earnedToday').textContent = '오늘 ＋' + won(earnedToday(k));
+    $('#earnedTodayNote').textContent = shortDate(tk) + ' 오늘 · 공부 완료 '
+      + doneItems(k).length + '개 · 적립 ' + won(earnedToday(k));
+  }
+
+  function todoRowHTML(k, t) {
+    return '<li class="check-row' + (t.done ? ' is-done' : '') + '">'
+      + '<button class="checkbox' + (t.done ? ' on' : '') + '" data-act="todo:toggle" data-child="' + k + '" data-id="' + t.id + '" role="checkbox" aria-checked="' + (t.done ? 'true' : 'false') + '" aria-label="' + esc(t.text) + ' 완료"><svg><use href="#ic-tick"></use></svg></button>'
+      + '<span class="check-body"><span class="check-text">' + esc(t.text) + '</span></span>'
+      + '<span class="icon-actions">'
+      + '<button class="ibtn ibtn--edit" data-act="todo:edit" data-child="' + k + '" data-id="' + t.id + '" aria-label="할 일 수정" title="수정">✏️</button>'
+      + '<button class="ibtn ibtn--del" data-act="todo:del" data-child="' + k + '" data-id="' + t.id + '" aria-label="할 일 삭제" title="삭제">✕</button>'
+      + '</span></li>';
+  }
+
+  function renderTodo() {
+    var totalAll = 0, doneAll = 0;
+    $('#todoList').innerHTML = ORDER.map(function (k) {
+      var f = FAMILY[k];
+      var list = todosOf(k);
+      var done = todoDone(k);
+      totalAll += list.length;
+      doneAll += done;
+      var badge = (list.length > 0 && done === list.length) ? '다 했어요 🌟' : '';
+      return '<div class="todo-person tint-' + f.tint + '" id="todo-' + k + '">'
+        + '<div class="todo-head"><span class="av-wrap"><svg class="av"><use href="#' + f.av + '"></use></svg></span>'
+        + '<span class="todo-who"><span class="todo-name">' + f.name + '</span>'
+        + '<span class="todo-prog">' + done + '/' + list.length + '개 완료</span></span>'
+        + (badge ? '<span class="pill todo-badge">' + badge + '</span>' : '') + '</div>'
+        + '<ul class="check-list">'
+        + (list.length ? list.map(function (t) { return todoRowHTML(k, t); }).join('')
+          : '<li class="empty">아직 할 일이 없어요.<br>아래 버튼으로 추가해 보세요.</li>')
+        + '</ul>'
+        + '<button class="todo-add" data-act="todo:add" data-child="' + k + '">＋ ' + f.name + ' 할 일 추가</button>'
+        + '</div>';
+    }).join('');
+    $('#todoSummary').textContent = doneAll + ' / ' + totalAll + ' 완료';
+  }
+
+  function msgHTML(m) {
+    var f = FAMILY[m.from];
+    var mine = m.from === state.chatSender;
+    var inner;
+    if (m.kind === 'sticker') {
+      inner = '<div class="sticker-bubble">'
+        + (m.sticker.indexOf('av-') === 0
+          ? '<div class="sticker-face"><svg class="av"><use href="#' + m.sticker + '"></use></svg></div>'
+          : '<div class="sticker-emoji">' + esc(m.sticker) + '</div>')
+        + '</div>';
+    } else {
+      inner = '<div class="bubble">' + esc(m.text) + '</div>';
+    }
+    return '<div class="msg' + (mine ? ' is-mine' : '') + '">'
+      + '<div class="msg-av"><svg class="av"><use href="#' + f.av + '"></use></svg></div>'
+      + '<div class="msg-body">'
+      + '<div class="msg-meta"><span class="msg-who">' + f.name + '</span><span>' + timeLabel(m.ts) + '</span></div>'
+      + inner
+      + '<div class="msg-foot"><button class="heart' + (m.hearted ? ' is-on' : '') + '" data-act="chat:heart" data-id="' + m.id + '" aria-label="하트 남기기" aria-pressed="' + (m.hearted ? 'true' : 'false') + '">❤️ <span>' + (m.hearts || 0) + '</span></button></div>'
+      + '</div></div>';
+  }
+
+  function renderChat(stickBottom) {
+    var stream = $('#chatStream');
+    if (!stream) { return; }
+    var prev = stream.scrollTop;
+    stream.innerHTML = state.chat.length
+      ? state.chat.map(msgHTML).join('')
+      : '<p class="empty">아직 대화가 없어요.<br>첫 마음을 남겨 보세요 💌</p>';
+    $('#chatCount').textContent = state.chat.length + '개';
+    stream.scrollTop = stickBottom ? stream.scrollHeight : prev;
+    $$('#chatStream .msg').forEach(function (el, i) { el.style.animationDelay = (i * 8) + 'ms'; });
+  }
+
+  function renderChatSender() {
+    $('#chatSender').innerHTML = segHTML('chat:who', ORDER, state.chatSender);
+  }
+
+  function renderStickerPanel() {
+    $('#stickerPanel').innerHTML = STICKERS.map(function (s) {
+      var face = s.k.indexOf('av-') === 0
+        ? '<span class="sticker-face"><svg class="av"><use href="#' + s.k + '"></use></svg></span>'
+        : s.k;
+      return '<button class="sticker-btn" data-act="chat:sticker" data-sticker="' + s.k + '" aria-label="' + s.label + ' 스티커 보내기">' + face + '</button>';
+    }).join('');
+  }
+
+  function renderAll() {
+    $('#todayLine').textContent = todayLabel();
+    renderFamily();
+    renderMission();
+    renderStamp();
+    renderStudy();
+    renderMoney();
+    renderTodo();
+    renderChatSender();
+    renderChat(false);
+    paintTimer();
+  }
+  
+  /* ---------------- 공부 타이머 ---------------- */
+  var T = { mode: 'countdown', minutes: 10, remainMs: 600000, elapsedMs: 0, running: false, runStart: 0, handle: null, done: false };
+
+  function timerRemain() {
+    return T.running ? Math.max(0, T.remainMs - (Date.now() - T.runStart)) : T.remainMs;
+  }
+  function timerElapsed() {
+    return T.running ? T.elapsedMs + (Date.now() - T.runStart) : T.elapsedMs;
+  }
+  function clockText(ms, upward) {
+    var total = upward ? Math.floor(ms / 1000) : Math.ceil(ms / 1000);
+    var h = Math.floor(total / 3600);
+    var m = Math.floor((total % 3600) / 60);
+    var s = total % 60;
+    return (h > 0 ? h + ':' : '') + pad2(m) + ':' + pad2(s);
+  }
+  function paintTimer() {
+    var clock = $('#timerClock');
+    if (!clock) { return; }
+    var hint = $('#timerHint'), track = $('#timerTrack');
+    var startBtn = $('#timerStart'), pauseBtn = $('#timerPause');
+    var cd = T.mode === 'countdown';
+    var ms = cd ? timerRemain() : timerElapsed();
+    clock.textContent = clockText(ms, !cd);
+    clock.classList.toggle('is-running', T.running && !(cd && ms <= 0));
+    clock.classList.toggle('is-done', cd && T.done);
+    var pct = 0;
+    if (cd && T.minutes > 0) { pct = (1 - timerRemain() / (T.minutes * 60000)) * 100; }
+    track.style.width = clamp(pct, 0, 100) + '%';
+    if (cd) {
+      hint.textContent = T.done ? '다 됐어요! 수고했어요 🌟' : (T.minutes + '분 · ' + (T.running ? '남은 시간' : '시작을 눌러요'));
+    } else {
+      hint.textContent = '스톱워치 · ' + (T.running ? '재는 중' : (T.elapsedMs > 0 ? '멈춤' : '시작을 눌러요'));
+    }
+    startBtn.hidden = T.running;
+    pauseBtn.hidden = !T.running;
+    var used = cd ? (T.remainMs < T.minutes * 60000 && T.remainMs > 0) : (T.elapsedMs > 0);
+    startBtn.textContent = used ? '▶ 이어서' : '▶ 시작';
+    $$('#timerMode .seg-btn').forEach(function (b) {
+      b.classList.toggle('is-on', b.getAttribute('data-mode') === T.mode);
+    });
+    $$('#timerPresets .chip').forEach(function (c) {
+      c.classList.toggle('is-on', Number(c.getAttribute('data-min')) === T.minutes && cd);
+    });
+  }
+  function timerTick() {
+    if (!T.running) { return; }
+    if (T.mode === 'countdown' && timerRemain() <= 0) {
+      T.remainMs = 0;
+      T.running = false;
+      T.done = true;
+      stopTick();
+      paintTimer();
+      toast('⏰ 시간 다 됐어요! 수고했어요 🌟');
+      return;
+    }
+    paintTimer();
+  }
+  function startTick() {
+    if (T.handle) { return; }
+    T.handle = setInterval(timerTick, 250);
+  }
+  function stopTick() {
+    if (T.handle) { clearInterval(T.handle); T.handle = null; }
+  }
+
+  /* ---------------- 시트 내용 ---------------- */
+  var draft = { mode: 'add', text: '', reward: 100, fixed: false, id: null };
+  var entryDraft = { type: 'deposit', amount: '', memo: '' };
+  var todoDraft = { mode: 'add', text: '', id: null, child: 'hajin' };
+  var calView = { kid: 'hajin', y: 0, m: 0 };
+  var resetArmed = false;
+
+  function syncItemDraft() {
+    var t = $('#itemText');
+    if (t) { draft.text = t.value; }
+  }
+
+  function openPinSheet() {
+    var body = '<p class="sheet-note">가족이 함께 쓰는 4자리 숫자예요. 바꾸면 가족 모두의 기기에 똑같이 적용돼요.</p>'
+      + '<div class="field"><label for="pinInput">새 PIN (숫자 4자리)</label>'
+      + '<input id="pinInput" type="tel" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="예: 0408"></div>'
+      + '<div class="btn-row"><button class="btn btn--mint" data-act="pin:save">저장</button>'
+      + '<button class="btn btn--white" data-act="modal:close">취소</button></div>'
+      + '<p class="hint">PIN을 잊어버리면 기록이 보이지 않아요. 가족끼리 꼭 기억해 주세요.</p>';
+    openSheet('🔒 가족 입장 PIN', body);
+    var inp = $('#pinInput');
+    if (inp) { setTimeout(function () { inp.focus(); }, 150); }
+  }
+
+  function openSettings() {
+    resetArmed = false;
+    var connText = sync.conn === 'on' ? '가족 모두와 연결됨' : (sync.conn === 'off' ? '이 기기에만 저장되는 중' : '연결하는 중');
+    var body = '<p class="sheet-note">적은 내용은 이 기기에 저장되고, 가족 모두의 기기에도 바로 나타나요. 인터넷이 없어도 이 기기 화면은 그대로 열려요.</p>'
+      + '<div class="sheet-section">'
+      + '<div class="setting-row"><span><span class="setting-title">가족 동기화</span><span class="setting-desc"><span class="sync-dot" id="syncDot"></span><span id="syncLabel">' + connText + '</span><br>공부·용돈·도장·할 일·채팅이 가족 모두의 기기에서 실시간으로 함께 바뀌어요.</span></span></div>'
+      + '<div class="setting-row"><span><span class="setting-title">가족 입장 PIN</span><span class="setting-desc" id="pinStateLabel">우리 가족만 들어올 수 있는 4자리 숫자예요. 바꾸면 가족 모두에게 똑같이 적용돼요.</span></span><button class="btn btn--white btn--sm" data-act="settings:pin">PIN 변경</button></div>'
+      + '<div class="setting-row"><span><span class="setting-title">기록 내보내기</span><span class="setting-desc">지금까지의 기록을 JSON 파일로 내려받아요.</span></span><button class="btn btn--white btn--sm" data-act="settings:export">내보내기</button></div>'
+      + '<div class="setting-row"><span><span class="setting-title">가족 구성</span><span class="setting-desc">아빠 · 엄마 · 하진 · 우재<br>휴대폰 화면에 맞춘 우리 가족 기록장이에요.</span></span></div>'
+      + '<div class="setting-row"><span><span class="setting-title danger">모든 기록 초기화</span><span class="setting-desc">공부·용돈·도장·할 일·채팅이 처음 상태로 돌아가요. 가족 모두의 기록이 같이 지워져요.</span></span><button class="btn btn--pink btn--sm" data-act="settings:reset">초기화</button></div>'
+      + '</div>'
+      + '<p class="hint">날씨와 미세먼지는 통영 기준 실제 값이에요(Open-Meteo, 10분마다 새로 고침).</p>';
+    openSheet('⚙️ 기록장 설정', body);
+    setConn(sync.conn);
+  }
+
+  function dayStampCount(k, y, m) { return monthStampCount(k, y, m); }
+
+  function openCalendar(kid) {
+    var now = new Date();
+    calView = { kid: kid || state.ui.stampKid, y: now.getFullYear(), m: now.getMonth() };
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    var k = calView.kid, y = calView.y, m = calView.m;
+    var f = FAMILY[k];
+    var stamps = state.kids[k].stamps;
+    var months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+    var first = new Date(y, m, 1);
+    var startDow = first.getDay();
+    var days = new Date(y, m + 1, 0).getDate();
+    var tk = todayKey();
+    var cells = '';
+    var i;
+    for (i = 0; i < startDow; i++) { cells += '<div class="cal-cell is-empty"></div>'; }
+    for (var d = 1; d <= days; d++) {
+      var key = y + '-' + pad2(m + 1) + '-' + pad2(d);
+      var done = !!stamps[key];
+      var cls = 'cal-cell' + (done ? ' is-done' : '') + (key === tk ? ' is-today' : '');
+      cells += '<div class="' + cls + '"><span>' + d + '</span>'
+        + (done ? '<span class="cal-face"><svg class="av"><use href="#' + f.av + '"></use></svg></span>' : '')
+        + '</div>';
+    }
+    var body = '<p class="sheet-note">' + f.name + ' 도장 ' + dayStampCount(k, y, m) + '개 · 연속 ' + streak(k) + '일</p>'
+      + '<div class="cal-head">'
+      + '<button class="ibtn" data-act="cal:prev" aria-label="이전 달">‹</button>'
+      + '<span class="cal-month">' + y + '년 ' + months[m] + '</span>'
+      + '<button class="ibtn" data-act="cal:next" aria-label="다음 달">›</button>'
+      + '</div>'
+      + '<div class="cal-grid">'
+      + ['일', '월', '화', '수', '목', '금', '토'].map(function (w) { return '<div class="cal-dow">' + w + '</div>'; }).join('')
+      + cells + '</div>'
+      + '<div class="btn-row"><button class="btn btn--white" data-act="cal:today">오늘로</button>'
+      + '<button class="btn btn--mint" data-act="modal:close">확인</button></div>';
+    openSheet('🗓️ ' + f.name + ' 도장판 달력', body);
+  }
+
+  function openFixed() {
+    var k = state.ui.studyKid;
+    var kd = state.kids[k];
+    var fixed = kd.items.filter(function (it) { return it.fixed; });
+    var body = '<p class="sheet-note">' + FAMILY[k].name + ' · 매일 아침 자동으로 올라오는 항목이에요. 금액을 고르고, 필요 없으면 고정을 풀어 보세요.</p>';
+    if (fixed.length) {
+      body += '<ul class="check-list">' + fixed.map(function (it) {
+        return '<li class="check-row"><span class="check-body"><span class="check-text">' + esc(it.text) + '</span>'
+          + '<span class="check-tags">' + [50, 100, 200].map(function (v) {
+            return '<button class="choice' + (it.reward === v ? ' is-on' : '') + '" data-act="fixed:reward" data-id="' + it.id + '" data-reward="' + v + '">' + v + '원</button>';
+          }).join('') + '</span></span>'
+          + '<span class="icon-actions">'
+          + '<button class="ibtn" data-act="fixed:unfix" data-id="' + it.id + '" title="고정 해제" aria-label="고정 해제">📌</button>'
+          + '<button class="ibtn ibtn--del" data-act="fixed:del" data-id="' + it.id + '" title="삭제" aria-label="삭제">✕</button></span></li>';
+      }).join('') + '</ul>';
+    } else {
+      body += '<p class="empty">아직 고정 항목이 없어요.</p>';
+    }
+    body += '<div class="sheet-section"><label class="field-label" for="fixedText">고정 항목 추가</label>'
+      + '<div class="add-inline"><input id="fixedText" type="text" maxlength="40" placeholder="예: 구구단 외우기">'
+      + '<button class="btn btn--sky btn--sm" data-act="fixed:add">추가</button></div></div>';
+    openSheet('⚙️ ' + FAMILY[k].name + ' 고정 항목', body);
+  }
+
+  function openItemSheet() {
+    var k = state.ui.studyKid;
+    var title = draft.mode === 'edit' ? '✏️ 공부 항목 수정' : '＋ 공부 추가';
+    var body = '<p class="sheet-note">' + FAMILY[k].name + '의 공부 항목을 ' + (draft.mode === 'edit' ? '고쳐요.' : '만들어요.') + '</p>'
+      + '<div class="field"><label for="itemText">무엇을 하나요?</label>'
+      + '<input id="itemText" type="text" maxlength="40" placeholder="예: 수학 문제집 5쪽" value="' + esc(draft.text) + '"></div>'
+      + '<div class="field"><label>끝내면 얼마를 적립할까요?</label><div class="choice-row">'
+      + [50, 100, 200, 500].map(function (v) {
+        return '<button class="choice' + (draft.reward === v ? ' is-on' : '') + '" data-act="item:reward" data-reward="' + v + '">' + v + '원</button>';
+      }).join('') + '</div></div>'
+      + '<div class="field"><label>매일 아침 자동으로 올릴까요?</label><div class="choice-row">'
+      + '<button class="choice' + (draft.fixed ? ' is-on' : '') + '" data-act="item:fixed">📌 ' + (draft.fixed ? '고정 항목이에요' : '고정 항목으로 정하기') + '</button></div></div>'
+      + '<div class="btn-row"><button class="btn btn--mint" data-act="item:save">' + (draft.mode === 'edit' ? '고치기' : '추가하기') + '</button>'
+      + '<button class="btn btn--white" data-act="modal:close">취소</button></div>';
+    openSheet(title, body);
+    var inp = $('#itemText');
+    if (inp) { setTimeout(function () { inp.focus(); }, 150); }
+  }
+
+  function openEntrySheet() {
+    var k = state.ui.moneyKid;
+    var isDep = entryDraft.type === 'deposit';
+    var body = '<p class="sheet-note">' + FAMILY[k].name + ' 용돈기입장 · ' + (isDep ? '받은 돈을 적어요.' : '쓴 돈을 적어요.') + '</p>'
+      + '<div class="field"><label for="entryAmount">금액</label>'
+      + '<input id="entryAmount" type="number" inputmode="numeric" min="1" step="100" placeholder="예: 1000" value="' + esc(entryDraft.amount) + '"></div>'
+      + '<div class="field"><label for="entryMemo">어디에 썼나요? (선택)</label>'
+      + '<input id="entryMemo" type="text" maxlength="30" placeholder="예: 할아버지 용돈" value="' + esc(entryDraft.memo) + '"></div>'
+      + '<div class="btn-row"><button class="btn ' + (isDep ? 'btn--mint' : 'btn--pink') + '" data-act="money:entrySave">' + (isDep ? '＋ 입금 적기' : '－ 사용 적기') + '</button>'
+      + '<button class="btn btn--white" data-act="modal:close">취소</button></div>';
+    openSheet(isDep ? '＋ 입금' : '－ 사용', body);
+    var inp = $('#entryAmount');
+    if (inp) { setTimeout(function () { inp.focus(); }, 150); }
+  }
+
+  function openTodoSheet() {
+    var k = todoDraft.child || 'hajin';
+    var isEdit = todoDraft.mode === 'edit';
+    var body = '<p class="sheet-note">' + FAMILY[k].name + '의 할 일을 ' + (isEdit ? '고쳐요.' : '만들어요.') + '</p>'
+      + '<div class="field"><label for="todoText">할 일</label>'
+      + '<input id="todoText" type="text" maxlength="40" placeholder="예: 책 30분 읽기" value="' + esc(todoDraft.text) + '"></div>'
+      + '<div class="btn-row"><button class="btn btn--mint" data-act="todo:save">' + (isEdit ? '고치기' : '추가하기') + '</button>'
+      + '<button class="btn btn--white" data-act="modal:close">취소</button></div>';
+    openSheet(isEdit ? '✏️ 할 일 수정' : '＋ ' + FAMILY[k].name + ' 할 일 추가', body);
+    var inp = $('#todoText');
+    if (inp) { setTimeout(function () { inp.focus(); }, 150); }
+  }
+
+  /* ---------------- 날짜 바꿈 ---------------- */
+  function pickMission(cur) {
+    if (MISSIONS.length < 2) { return 0; }
+    var i = cur;
+    while (i === cur) { i = Math.floor(Math.random() * MISSIONS.length); }
+    return i;
+  }
+  function ensureToday() {
+    var tk = todayKey();
+    if (state.day === tk) { return false; }
+    state.day = tk;
+    KID_ORDER.forEach(function (k) {
+      var kd = state.kids[k];
+      kd.items = kd.items.filter(function (it) { return it.fixed; });
+      kd.items.forEach(function (it) { it.done = false; });
+    });
+    state.mission = pickMission(state.mission);
+    state.missionDay = tk;
+    return true;
+  }
+
+  /* ---------------- 탭 ---------------- */
+  function setTab(t, silent) {
+    state.ui.tab = t;
+    $$('.panel').forEach(function (p) { p.hidden = p.id !== 'panel-' + t; });
+    $$('.tabbar .tab').forEach(function (b) {
+      var on = b.getAttribute('data-tab') === t;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (t === 'chat') { renderChat(true); }
+    if (!silent) {
+      save();
+      var panel = document.getElementById('panel-' + t);
+      if (t === 'chat' && panel) {
+        var top = window.pageYOffset + panel.getBoundingClientRect().top - 10;
+        try { window.scrollTo({ top: top, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, top); }
+      } else {
+        try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
+      }
+    }
+  }
+
+  /* ---------------- 동작 모음 ---------------- */
+  var ACTIONS = {
+    'tab:switch': function (el) { setTab(el.getAttribute('data-tab')); },
+
+    'family:open': function (el) {
+      var k = el.getAttribute('data-child');
+      if (!FAMILY[k]) { return; }
+      if (FAMILY[k].kid) {
+        state.ui.studyKid = k;
+        renderStudy();
+        setTab('study');
+      } else {
+        setTab('todo');
+        setTimeout(function () {
+          var node = document.getElementById('todo-' + k);
+          if (node && node.scrollIntoView) { node.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        }, 80);
+      }
+    },
+
+    'mission:together': function () {
+      state.together++;
+      syncStamps();
+      save();
+      renderFamily();
+      renderMission();
+      var box = $('#missionEmoji');
+      box.classList.add('pop');
+      setTimeout(function () { box.classList.remove('pop'); }, 320);
+      toast('가족 미션 ＋1! 함께한 시간이 쌓였어요 🎉');
+    },
+
+    'mission:reroll': function () {
+      state.mission = pickMission(state.mission);
+      save();
+      renderMission();
+      var box = $('#missionEmoji');
+      box.classList.add('pop');
+      setTimeout(function () { box.classList.remove('pop'); }, 320);
+      toast('새 미션을 뽑았어요! ' + MISSIONS[state.mission].e);
+    },
+
+    'stamp:child': function (el) {
+      state.ui.stampKid = el.getAttribute('data-child');
+      save();
+      renderStamp();
+    },
+    'stamp:view': function () { openCalendar(state.ui.stampKid); },
+
+    'study:child': function (el) {
+      state.ui.studyKid = el.getAttribute('data-child');
+      save();
+      renderStudy();
+    },
+
+    'study:toggle': function (el) {
+      var k = state.ui.studyKid;
+      var it = findItem(k, el.getAttribute('data-id'));
+      if (!it) { return; }
+      var kd = state.kids[k];
+      var tk = todayKey();
+      it.done = !it.done;
+      if (it.done) {
+        kd.ledger.push({ id: uid(), date: tk, itemId: it.id, text: it.text, amount: it.reward });
+        toast('💛 ' + it.text + ' · ' + won(it.reward) + ' 적립!');
+      } else {
+        for (var i = kd.ledger.length - 1; i >= 0; i--) {
+          var L = kd.ledger[i];
+          if (L.date === tk && L.itemId === it.id) { kd.ledger.splice(i, 1); break; }
+        }
+        toast('적립을 잠시 풀었어요');
+      }
+      syncStamps();
+      save();
+      renderFamily();
+      renderStamp();
+      renderStudy();
+      renderMoney();
+    },
+
+    'study:edit': function (el) {
+      var it = findItem(state.ui.studyKid, el.getAttribute('data-id'));
+      if (!it) { return; }
+      draft = { mode: 'edit', text: it.text, reward: it.reward, fixed: it.fixed, id: it.id };
+      openItemSheet();
+    },
+
+    'study:del': function (el) {
+      var k = state.ui.studyKid;
+      var id = el.getAttribute('data-id');
+      var it = findItem(k, id);
+      if (!it) { return; }
+      state.kids[k].items = items(k).filter(function (x) { return x.id !== id; });
+      syncStamps();
+      save();
+      renderStudy();
+      renderFamily();
+      renderStamp();
+      toast('“' + it.text + '” 항목을 지웠어요');
+    },
+
+    'study:add': function () {
+      draft = { mode: 'add', text: '', reward: 100, fixed: false, id: null };
+      openItemSheet();
+    },
+
+    'item:reward': function (el) {
+      syncItemDraft();
+      draft.reward = clamp(Number(el.getAttribute('data-reward')) || 100, 0, 100000);
+      openItemSheet();
+    },
+    'item:fixed': function () {
+      syncItemDraft();
+      draft.fixed = !draft.fixed;
+      openItemSheet();
+    },
+    'item:save': function () {
+      syncItemDraft();
+      var text = String(draft.text || '').trim();
+      if (!text) { toast('무엇을 공부하는지 적어 주세요'); return; }
+      var k = state.ui.studyKid;
+      if (draft.mode === 'edit' && draft.id) {
+        var it = findItem(k, draft.id);
+        if (it) {
+          it.text = text.slice(0, 40);
+          it.reward = draft.reward;
+          it.fixed = draft.fixed;
+        }
+        toast('공부 항목을 고쳤어요');
+      } else {
+        state.kids[k].items.push(newItem(text.slice(0, 40), draft.reward, draft.fixed));
+        toast('＋ ' + text.slice(0, 40) + ' 추가했어요');
+      }
+      save();
+      closeSheet();
+      renderStudy();
+    },
+
+    'fixed:open': function () { openFixed(); },
+    'fixed:reward': function (el) {
+      var it = findItem(state.ui.studyKid, el.getAttribute('data-id'));
+      if (!it) { return; }
+      it.reward = clamp(Number(el.getAttribute('data-reward')) || 100, 0, 100000);
+      save();
+      openFixed();
+      renderStudy();
+    },
+    'fixed:unfix': function (el) {
+      var it = findItem(state.ui.studyKid, el.getAttribute('data-id'));
+      if (!it) { return; }
+      it.fixed = false;
+      save();
+      openFixed();
+      renderStudy();
+      toast('고정을 풀었어요. 오늘만 남아요.');
+    },
+    'fixed:del': function (el) {
+      var k = state.ui.studyKid;
+      var id = el.getAttribute('data-id');
+      state.kids[k].items = items(k).filter(function (x) { return x.id !== id; });
+      syncStamps();
+      save();
+      openFixed();
+      renderStudy();
+      renderFamily();
+      renderStamp();
+      toast('고정 항목을 지웠어요');
+    },
+    'fixed:add': function () {
+      var inp = $('#fixedText');
+      var text = inp ? String(inp.value || '').trim() : '';
+      if (!text) { toast('추가할 고정 항목을 적어 주세요'); if (inp) { inp.focus(); } return; }
+      state.kids[state.ui.studyKid].items.push(newItem(text.slice(0, 40), 100, true));
+      save();
+      openFixed();
+      renderStudy();
+      toast('📌 고정 항목으로 추가했어요');
+    },
+
+    'timer:mode': function (el) {
+      var mode = el.getAttribute('data-mode');
+      if (mode === T.mode) { return; }
+      T.mode = mode;
+      T.running = false;
+      T.done = false;
+      stopTick();
+      T.remainMs = T.minutes * 60000;
+      T.elapsedMs = 0;
+      paintTimer();
+    },
+    'timer:start': function () {
+      if (T.running) { return; }
+      if (T.mode === 'countdown' && T.remainMs <= 0) { T.remainMs = T.minutes * 60000; }
+      T.done = false;
+      T.running = true;
+      T.runStart = Date.now();
+      startTick();
+      paintTimer();
+    },
+    'timer:pause': function () {
+      if (!T.running) { return; }
+      if (T.mode === 'countdown') { T.remainMs = timerRemain(); }
+      else { T.elapsedMs = timerElapsed(); }
+      T.running = false;
+      stopTick();
+      paintTimer();
+    },
+    'timer:reset': function () {
+      T.running = false;
+      T.done = false;
+      stopTick();
+      if (T.mode === 'countdown') { T.remainMs = T.minutes * 60000; }
+      else { T.elapsedMs = 0; }
+      paintTimer();
+    },
+    'timer:preset': function (el) {
+      var n = clamp(Number(el.getAttribute('data-min')) || 10, 1, 180);
+      T.mode = 'countdown';
+      T.minutes = n;
+      T.remainMs = n * 60000;
+      T.elapsedMs = 0;
+      T.running = false;
+      T.done = false;
+      stopTick();
+      paintTimer();
+    },
+    'timer:setmin': function () {
+      var inp = $('#timerCustom');
+      var n = Math.round(Number(inp ? inp.value : 0));
+      if (!isFinite(n) || n < 1 || n > 180) { toast('1분에서 180분 사이로 적어 주세요'); return; }
+      T.mode = 'countdown';
+      T.minutes = n;
+      T.remainMs = n * 60000;
+      T.elapsedMs = 0;
+      T.running = false;
+      T.done = false;
+      stopTick();
+      paintTimer();
+      toast(n + '분으로 맞췄어요');
+    },
+
+    'money:child': function (el) {
+      state.ui.moneyKid = el.getAttribute('data-child');
+      save();
+      renderMoney();
+    },
+    'money:saveStart': function () {
+      var k = state.ui.moneyKid;
+      var inp = $('#startAmount');
+      var v = Math.round(Number(inp ? inp.value : 0));
+      if (!isFinite(v) || v < 0) { toast('0원 이상으로 적어 주세요'); return; }
+      state.kids[k].start = clamp(v, 0, 100000000);
+      if (inp) { inp.value = String(state.kids[k].start); }
+      save();
+      renderMoney();
+      renderFamily();
+      toast('시작 금액을 ' + won(state.kids[k].start) + '으로 저장했어요');
+    },
+    'money:deposit': function () { entryDraft = { type: 'deposit', amount: '', memo: '' }; openEntrySheet(); },
+    'money:spend': function () { entryDraft = { type: 'spend', amount: '', memo: '' }; openEntrySheet(); },
+    'money:entrySave': function () {
+      var k = state.ui.moneyKid;
+      var aInp = $('#entryAmount'), mInp = $('#entryMemo');
+      var amount = Math.round(Number(aInp ? aInp.value : 0));
+      if (!isFinite(amount) || amount <= 0) { toast('금액을 1원 이상 적어 주세요'); if (aInp) { aInp.focus(); } return; }
+      state.kids[k].entries.push({
+        id: uid(),
+        type: entryDraft.type,
+        amount: clamp(amount, 1, 100000000),
+        memo: mInp ? String(mInp.value || '').trim().slice(0, 30) : '',
+        date: todayKey(),
+        ts: Date.now()
+      });
+      save();
+      closeSheet();
+      renderMoney();
+      renderFamily();
+      toast((entryDraft.type === 'deposit' ? '＋ ' : '－ ') + won(amount) + ' 기록했어요');
+    },
+
+    'todo:toggle': function (el) {
+      var k = el.getAttribute('data-child');
+      var list = state.todos[k] || [];
+      var id = el.getAttribute('data-id');
+      var found = null;
+      list.forEach(function (t) { if (t.id === id) { found = t; } });
+      if (!found) { return; }
+      found.done = !found.done;
+      syncStamps();
+      save();
+      renderTodo();
+      renderFamily();
+      renderStamp();
+      if (found.done) { toast('✓ ' + found.text + ' 완료'); }
+    },
+    'todo:add': function (el) {
+      todoDraft = { mode: 'add', text: '', id: null, child: el.getAttribute('data-child') };
+      openTodoSheet();
+    },
+    'todo:edit': function (el) {
+      var k = el.getAttribute('data-child');
+      var id = el.getAttribute('data-id');
+      var target = null;
+      (state.todos[k] || []).forEach(function (t) { if (t.id === id) { target = t; } });
+      if (!target) { return; }
+      todoDraft = { mode: 'edit', text: target.text, id: id, child: k };
+      openTodoSheet();
+    },
+    'todo:save': function () {
+      var inp = $('#todoText');
+      var text = inp ? String(inp.value || '').trim() : '';
+      if (!text) { toast('할 일을 적어 주세요'); return; }
+      var k = todoDraft.child;
+      if (!state.todos[k]) { return; }
+      if (todoDraft.mode === 'edit' && todoDraft.id) {
+        state.todos[k].forEach(function (t) { if (t.id === todoDraft.id) { t.text = text.slice(0, 40); } });
+        toast('할 일을 고쳤어요');
+      } else {
+        state.todos[k].push({ id: uid(), text: text.slice(0, 40), done: false });
+        toast('＋ ' + text.slice(0, 40) + ' 추가했어요');
+      }
+      save();
+      closeSheet();
+      renderTodo();
+      renderFamily();
+    },
+    'todo:del': function (el) {
+      var k = el.getAttribute('data-child');
+      var id = el.getAttribute('data-id');
+      var removed = null;
+      state.todos[k] = (state.todos[k] || []).filter(function (t) {
+        if (t.id === id) { removed = t; return false; }
+        return true;
+      });
+      syncStamps();
+      save();
+      renderTodo();
+      renderFamily();
+      renderStamp();
+      toast(removed ? '“' + removed.text + '” 지웠어요' : '지웠어요');
+    },
+
+    'chat:who': function (el) {
+      var who = el.getAttribute('data-child');
+      if (!FAMILY[who]) { return; }
+      state.chatSender = who;
+      lsSet(SENDER_KEY, who);   /* 이 기기는 다음에도 같은 사람으로 기억합니다 */
+      save();
+      renderChatSender();
+      renderChat(false);
+    },
+    'chat:send': function () {
+      var inp = $('#chatInput');
+      var text = inp ? String(inp.value || '').trim() : '';
+      if (!text) { toast('메시지를 적어 주세요'); if (inp) { inp.focus(); } return; }
+      var msg = { id: uid(), from: state.chatSender, kind: 'text', text: text.slice(0, 200), ts: Date.now(), hearts: 0, hearted: false };
+      mySends[msg.id] = Date.now();
+      state.chat.push(msg);
+      if (state.chat.length > 200) { state.chat = state.chat.slice(-200); }
+      if (inp) { inp.value = ''; }
+      save();
+      renderChat(true);
+    },
+    'chat:sticker': function (el) {
+      var sticker = el.getAttribute('data-sticker') || '🥰';
+      var msg = { id: uid(), from: state.chatSender, kind: 'sticker', sticker: sticker, ts: Date.now(), hearts: 0, hearted: false };
+      mySends[msg.id] = Date.now();
+      state.chat.push(msg);
+      if (state.chat.length > 200) { state.chat = state.chat.slice(-200); }
+      save();
+      renderChat(true);
+    },
+    'chat:stickerToggle': function () {
+      var panel = $('#stickerPanel');
+      panel.hidden = !panel.hidden;
+      $('#stickerToggle').classList.toggle('is-on', !panel.hidden);
+      var card = $('.chat-card');
+      if (card) { card.classList.toggle('is-stickers', !panel.hidden); }
+    },
+    'chat:heart': function (el) {
+      var id = el.getAttribute('data-id');
+      var target = null;
+      state.chat.forEach(function (m) { if (m.id === id) { target = m; } });
+      if (!target) { return; }
+      if (target.hearted) {
+        target.hearted = false;
+        target.hearts = Math.max(0, (target.hearts || 0) - 1);
+      } else {
+        target.hearted = true;
+        target.hearts = (target.hearts || 0) + 1;
+      }
+      save();
+      renderChat(false);
+    },
+
+    'settings:open': function () { openSettings(); },
+    'settings:pin': function () { openPinSheet(); },
+    'pin:save': function () {
+      var inp = $('#pinInput');
+      var pin = String(inp ? inp.value : '').replace(/\D/g, '').slice(0, 4);
+      if (!/^\d{4}$/.test(pin)) { toast('숫자 4자리로 정해 주세요'); if (inp) { inp.focus(); } return; }
+      savePin(pin);
+      closeSheet();
+      toast('가족 PIN을 ' + pin + '으로 바꿨어요');
+    },
+    'lock:key': function (el) {
+      if (lockBuf.length >= 4) { return; }
+      lockBuf += el.getAttribute('data-key') || '';
+      paintLock();
+      if (lockBuf.length === 4) { tryUnlock(0); }
+    },
+    'lock:back': function () {
+      lockBuf = lockBuf.slice(0, -1);
+      paintLock();
+      var msg = $('#lockMsg');
+      if (msg) { msg.textContent = ''; }
+    },
+    'lock:ok': function () { tryUnlock(0); },
+    'settings:reset': function () {
+      if (!resetArmed) {
+        resetArmed = true;
+        var btn = $('[data-act="settings:reset"]');
+        if (btn) { btn.textContent = '정말 지울까요?'; }
+        toast('한 번 더 누르면 모든 기록이 지워져요');
+        return;
+      }
+      state = defaults();
+      resetArmed = false;
+      save();
+      closeSheet();
+      renderAll();
+      setTab('home', true);
+      toast('처음 상태로 돌아갔어요. 새로 시작해 봐요!');
+    },
+    'settings:export': function () {
+      try {
+        var blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '우리-가족-기록장-' + todayKey() + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 3000);
+        toast('기록을 파일로 내보냈어요');
+      } catch (e) {
+        toast('내보내기를 할 수 없어요');
+      }
+    },
+
+    'cal:prev': function () {
+      calView.m--;
+      if (calView.m < 0) { calView.m = 11; calView.y--; }
+      renderCalendar();
+    },
+    'cal:next': function () {
+      calView.m++;
+      if (calView.m > 11) { calView.m = 0; calView.y++; }
+      renderCalendar();
+    },
+    'cal:today': function () {
+      var now = new Date();
+      calView.y = now.getFullYear();
+      calView.m = now.getMonth();
+      renderCalendar();
+    },
+
+    'modal:close': function () { closeSheet(); }
+  };
+
+  /* ---------------- 이벤트 ---------------- */
+  function onClick(ev) {
+    var el = ev.target;
+    while (el && el !== document && !(el.getAttribute && el.getAttribute('data-act'))) {
+      el = el.parentNode;
+    }
+    if (!el || el === document || !el.getAttribute) { return; }
+    var act = el.getAttribute('data-act');
+    var fn = ACTIONS[act];
+    if (!fn) { return; }
+    ev.preventDefault();
+    fn(el, ev);
+  }
+
+  function onKeyDown(ev) {
+    if (ev.key === 'Escape') { closeSheet(); return; }
+    if (ev.key !== 'Enter') { return; }
+    var id = ev.target && ev.target.id;
+    if (id === 'chatInput') { ev.preventDefault(); ACTIONS['chat:send'](); }
+    else if (id === 'itemText') { ev.preventDefault(); ACTIONS['item:save'](); }
+    else if (id === 'todoText') { ev.preventDefault(); ACTIONS['todo:save'](); }
+    else if (id === 'fixedText') { ev.preventDefault(); ACTIONS['fixed:add'](); }
+    else if (id === 'entryAmount' || id === 'entryMemo') { ev.preventDefault(); ACTIONS['money:entrySave'](); }
+    else if (id === 'startAmount') { ev.preventDefault(); ACTIONS['money:saveStart'](); }
+    else if (id === 'timerCustom') { ev.preventDefault(); ACTIONS['timer:setmin'](); }
+    else if (id === 'pinInput') { ev.preventDefault(); ACTIONS['pin:save'](); }
+  }
+
+  /* ---------------- 시작 ---------------- */
+  function boot() {
+    document.addEventListener('click', onClick);
+    document.addEventListener('keydown', onKeyDown);
+    load();            /* 이 기기에 있던 기록을 먼저 읽어 둡니다(오프라인에서도 열림) */
+    startCloud();      /* 가족 PIN과 기록을 데이터베이스에서 받아옵니다 */
+    loadWeather();     /* 통영 실시간 날씨·미세먼지 */
+    if (lsGet(UNLOCK_KEY) === '1') {
+      startApp();
+      hideLock();
+    } else {
+      showLock();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+</body>
+</html>
