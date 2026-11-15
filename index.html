@@ -1200,7 +1200,8 @@ body.is-locked{overflow:hidden}
   })();
 
   var sync = { ready: false, root: null, hash: null, timer: null, lastAppliedAt: 0, dirtyAt: 0, conn: 'off',
-               verified: false, sawBoard: false, loaded: false, connBound: false, swapping: false, nullSeq: 0 };
+               verified: false, sawBoard: false, loaded: false, connBound: false, swapping: false, nullSeq: 0,
+               deferred: false, deferTimer: null };
   var appStarted = false;
   var mySends = {};          /* 방금 내가 보낸 채팅 — 다른 기기 소식과 합질 때 살려 둡니다 */
   var bootAt = Date.now();
@@ -1283,11 +1284,32 @@ body.is-locked{overflow:hidden}
     sync.sawBoard = true;
     sync.loaded = true;   /* 가족 기록을 받았습니다 */
     if (raw.by === DEVICE_ID) { return; }   /* 내가 올린 내용은 이 기기에 이미 있습니다 */
-    if (Date.now() - sync.dirtyAt < 1200) { return; }   /* 내가 고친 내용을 올리는 중이면 이 기기 기록이 더 새롭습니다 */
+    if (Date.now() - sync.dirtyAt < 1200) {
+      /* 내가 고친 내용을 올리는 중 — 그사이 온 가족 소식을 버리지 않고 잠시 뒤 다시 확인합니다 */
+      sync.deferred = true;
+      clearTimeout(sync.deferTimer);
+      sync.deferTimer = setTimeout(applyDeferred, 1350);
+      return;
+    }
     var at = num(raw.at, 0);
     if (at && at <= sync.lastAppliedAt) { return; }   /* 나중 소식을 이미 받았으면 옛 소식은 건너뜁니다 */
     if (at) { sync.lastAppliedAt = at; }
     applyCloud(raw);
+  }
+
+  /* 올리는 중이라 미뤄 둔 가족 소식을 서버 기록으로 다시 확인합니다 */
+  function applyDeferred() {
+    if (!sync.ready || !sync.root) { return; }
+    sync.deferred = false;
+    sync.root.child('board').once('value').then(function (snap) {
+      var raw = snap.val();
+      if (!raw || raw.by === DEVICE_ID) { return; }   /* 내가 올린 기록이 이미 최신 */
+      var at = num(raw.at, 0);
+      if (at && at <= sync.lastAppliedAt) { return; }
+      if (at) { sync.lastAppliedAt = at; }
+      sync.loaded = true;
+      applyCloud(raw);
+    }, function () {});
   }
 
   function attachRoot() {
@@ -1340,6 +1362,8 @@ body.is-locked{overflow:hidden}
     sync.sawBoard = false;
     sync.loaded = false;
     sync.nullSeq++;
+    sync.deferred = false;
+    clearTimeout(sync.deferTimer);
   }
 
   /* 통과한 암호의 해시 경로로 들어갑니다 */
